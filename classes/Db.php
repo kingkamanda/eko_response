@@ -32,7 +32,15 @@ class Db
             return $this->conn;
         } catch (PDOException $e) {
             error_log("Database connection failed: " . $e->getMessage());
-            return false;
+            http_response_code(500);
+            exit(
+                "<h2>Database connection error</h2>" .
+                "<p>The application could not connect to the <strong>" . htmlspecialchars(DBNAME) .
+                "</strong> database on <strong>" . htmlspecialchars(DBHOST) . "</strong>.</p>" .
+                "<p>Check that MySQL is running and that the credentials are correct. " .
+                "You can override them with the DB_HOST, DB_NAME, DB_USER and DB_PASS " .
+                "environment variables (see the README).</p>"
+            );
         }
     }
 }

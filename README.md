@@ -56,16 +56,25 @@ only need to import the database and start the server.
    mysql -u root -p response < seed_demo.sql
    ```
 
-3. **(Optional) Override credentials.** Connection settings are read from
-   environment variables; set any of these only if your setup differs from the
-   defaults:
+3. **Set your MySQL password if it isn't `root`.** Connection settings are read
+   from environment variables; set them in the **same terminal** you start PHP
+   from.
+
+   macOS / Linux:
 
    ```bash
-   export DB_HOST=localhost
-   export DB_NAME=response
-   export DB_USER=root
-   export DB_PASS=root
+   export DB_PASS=your_mysql_password
    ```
+
+   Windows PowerShell:
+
+   ```powershell
+   $env:DB_PASS = "your_mysql_password"
+   ```
+
+   The other variables (`DB_HOST`, `DB_NAME`, `DB_USER`) work the same way.
+   Alternatively, edit the defaults directly in `classes/config.php` and
+   `admin/classes/config.php`.
 
 4. **Run it** with the built-in PHP server from the project root:
 
@@ -87,6 +96,21 @@ only need to import the database and start the server.
 
 - Email: `demo@ekoresponse.test`
 - Password: `demo12345`
+
+## Troubleshooting
+
+- **`Access denied for user 'root'@'localhost'` / "Database connection error"** —
+  your MySQL password doesn't match. Set `DB_PASS` (see step 3) to the password
+  you use for MySQL, then restart `php -S`.
+- **`ERROR 1050 ... Table 'admin' already exists`** on import — the database was
+  partly imported before. Drop it and re-import for a clean load:
+
+  ```bash
+  mysql -u root -p -e "DROP DATABASE IF EXISTS response;"
+  mysql -u root -p < "Eko Response.sql"
+  ```
+- **`seed_demo.sql ... does not exist`** — you're on an older copy of the repo.
+  Pull the latest branch (or re-download) so the file is present.
 
 ## How emergencies are logged across locations
 

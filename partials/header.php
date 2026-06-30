@@ -16,7 +16,6 @@
 
     <link rel="stylesheet" type="text/css" href="assets/static/bootstrap/css/bootstrap.min.css">
 
-    <link rel="stylesheet" href="animate.min.css">
     <!--============== CSS================ -->
     <link rel="stylesheet" href="assets/static/css/nav.css">
      <link rel="stylesheet" href="assets/static/css/styles.css">

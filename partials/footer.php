@@ -73,22 +73,18 @@ ul{
             </footer>
         </section>
 
-<script src="jquery-3.7.1.js"></script>
-    <script src="js/jquery-3.3.1.min.js"></script>
-    <script src="js/popper.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="bootstrap/js/bootstrap.bundle.js"></script>
-    <script src="js/main.js"></script>
-    <!-- =======================JAVASCRIPT========================= -->
-    <script src="javascript/main.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/static/javascript/main.js"></script>
     <script>
     const whatsappBtn = document.getElementById('sticky-btn');
-const whatsappNumber = '+1234567890'; // Replace with your WhatsApp number
+    const whatsappNumber = '+1234567890'; // Replace with a real WhatsApp number
 
-whatsappBtn.addEventListener('click', () => {
-  const whatsappUrl = `https://wa.me/${whatsappNumber}`;
-  window.open(whatsappUrl, '_blank');
-});
+    if (whatsappBtn) {
+      whatsappBtn.addEventListener('click', () => {
+        window.open(`https://wa.me/${whatsappNumber}`, '_blank');
+      });
+    }
     </script>
 </body>
 
