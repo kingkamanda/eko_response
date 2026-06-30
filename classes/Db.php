@@ -20,7 +20,7 @@ class Db
             return $this->conn;
         }
 
-        $dsn = "mysql:host={$this->dbhost};dbname={$this->dbname};charset=utf8mb4";
+        $dsn = "mysql:host={$this->dbhost};port=" . DBPORT . ";dbname={$this->dbname};charset=utf8mb4";
         $options = [
             PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
@@ -36,10 +36,15 @@ class Db
             exit(
                 "<h2>Database connection error</h2>" .
                 "<p>The application could not connect to the <strong>" . htmlspecialchars(DBNAME) .
-                "</strong> database on <strong>" . htmlspecialchars(DBHOST) . "</strong>.</p>" .
-                "<p>Check that MySQL is running and that the credentials are correct. " .
-                "You can override them with the DB_HOST, DB_NAME, DB_USER and DB_PASS " .
-                "environment variables (see the README).</p>"
+                "</strong> database as user <strong>" . htmlspecialchars(DBUSER) .
+                "</strong> on <strong>" . htmlspecialchars(DBHOST) . "</strong>.</p>" .
+                "<p><strong>Reason:</strong> " . htmlspecialchars($e->getMessage()) . "</p>" .
+                "<ul>" .
+                "<li><code>[1045] Access denied</code> &rarr; wrong password. Set it with " .
+                "<code>DB_PASS</code> or edit <code>classes/config.php</code> (see SETUP.md).</li>" .
+                "<li><code>[1049] Unknown database</code> &rarr; import <code>Eko Response.sql</code> first.</li>" .
+                "<li><code>[2002]</code> / connection refused &rarr; MySQL isn't running.</li>" .
+                "</ul>"
             );
         }
     }
