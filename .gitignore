@@ -1,0 +1,19 @@
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.code-workspace
+.idea/
+.vscode/
+
+# PHP
+vendor/
+*.log
+
+# Local environment overrides
+.env
+
+# User-generated uploads (keep the directories, ignore their contents)
+uploads/*
+incident_media/*
+!uploads/.gitkeep
+!incident_media/.gitkeep
