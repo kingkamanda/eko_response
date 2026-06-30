@@ -27,7 +27,12 @@ require_once "partials/header.php";
                         <a href="emergency.php" class="btn btn-danger  btn-block">
                         <span><i class="ri-alarm-warning-fill"></i></span> <span>Create Emergency</span>
                         </a>
-                    </div>            
+                    </div>
+                    <div class="col-md-3">
+                        <a href="login_signup.php?form=signup" class="btn btn-primary btn-block">
+                        <span><i class="ri-user-add-line"></i></span> <span>Register</span>
+                        </a>
+                    </div>
                     </div>
                 </div>
                 

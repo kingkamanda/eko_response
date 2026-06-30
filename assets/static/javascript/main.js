@@ -1,4 +1,9 @@
-document.getElementById("register message").innerHTML = "Please Click <a href='update_profile.php'>Here</a>  to update Your profile";
+// Optional profile-prompt placeholder; only fill it when the element exists so
+// this script never aborts before wiring up the navigation menu below.
+const registerMessage = document.getElementById("register-message");
+if (registerMessage) {
+    registerMessage.innerHTML = "Please click <a href='update_profile.php'>here</a> to update your profile.";
+}
 
 
 // $(function() {
@@ -20,6 +25,8 @@ document.getElementById("register message").innerHTML = "Please Click <a href='u
 let showMenu = (toggleId, navId) =>{
    let toggle = document.getElementById(toggleId),
          nav = document.getElementById(navId)
+
+   if (!toggle || !nav) return;
 
    toggle.addEventListener('click', () =>{
        // Add show-menu class to nav menu

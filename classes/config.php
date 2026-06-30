@@ -8,6 +8,6 @@
  */
 
 define("DBHOST", getenv("DB_HOST") ?: "localhost");
-define("DBNAME", getenv("DB_NAME") ?: "Response");
+define("DBNAME", getenv("DB_NAME") ?: "response");
 define("DBUSER", getenv("DB_USER") ?: "root");
 define("DBPASS", getenv("DB_PASS") ?: "root");

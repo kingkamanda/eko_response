@@ -25,6 +25,8 @@ $emergency   = filter_input(INPUT_POST, 'emergency_type', FILTER_VALIDATE_INT);
 $status      = sanitizer($_POST['status'] ?? '');
 $time        = sanitizer($_POST['time'] ?? '');
 $description = sanitizer($_POST['desc'] ?? '');
+$latitude    = filter_input(INPUT_POST, 'latitude', FILTER_VALIDATE_FLOAT);
+$longitude   = filter_input(INPUT_POST, 'longitude', FILTER_VALIDATE_FLOAT);
 $incident_img = $_FILES['imageUpload'] ?? null;
 $incident_vid = $_FILES['videoUpload'] ?? null;
 
@@ -37,7 +39,9 @@ if (empty($fullname) || empty($phone) || empty($location) || !$lga || !$emergenc
 $incident = new Incident();
 $loc = $incident->addIncident(
     $user_id, $fullname, $phone, $location, $emergency,
-    $status, $time, $incident_img, $incident_vid, $description, $lga
+    $status, $time, $incident_img, $incident_vid, $description, $lga,
+    $latitude !== false ? $latitude : null,
+    $longitude !== false ? $longitude : null
 );
 
 if (!$loc) {
@@ -45,18 +49,20 @@ if (!$loc) {
     exit();
 }
 
-// Route to the response units relevant to the chosen emergency category.
-// Categories: 1 Medical, 2 Fire, 3 Accident, 4 Theft/Crime, 6 Ambulance Service.
-switch ($emergency) {
-    case 2:
-        $page = "fire.php";
-        break;
-    case 4:
-        $page = "police.php";
-        break;
-    default: // Medical, Accident, Ambulance -> medical units
-        $page = "hospital.php";
-        break;
+// Route to the response service relevant to the chosen emergency category.
+//   Fire service:   Fire(2), Flood(7), Building Collapse(8), Gas Leak(10)
+//   Police:         Theft/Crime(4), Kidnapping(11), Domestic Violence(12), Civil Unrest(15)
+//   Medical (default): Medical(1), Accident(3), Ambulance(6), Road Accident(9),
+//                      Electrocution(13), Drowning(14)
+$fireTypes   = [2, 7, 8, 10];
+$policeTypes = [4, 11, 12, 15];
+
+if (in_array($emergency, $fireTypes, true)) {
+    $page = "fire.php";
+} elseif (in_array($emergency, $policeTypes, true)) {
+    $page = "police.php";
+} else {
+    $page = "hospital.php";
 }
 
 header("location:../$page?loc=$loc");

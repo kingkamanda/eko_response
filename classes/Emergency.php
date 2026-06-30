@@ -33,7 +33,9 @@ class Incident extends Db
         $incident_img,
         $incident_vid,
         $description,
-        $lga
+        $lga,
+        $latitude = null,
+        $longitude = null
     ) {
         try {
             $imageName = $this->saveUpload($incident_img, ['jpg', 'jpeg', 'png', 'gif']);
@@ -42,12 +44,14 @@ class Incident extends Db
             $query = "INSERT INTO emergency_alert_table
                         (user_id, user_fullname, user_phone, user_location, emergency_type,
                          alert_status, alert_time, emergency_alert_image, emergency_alert_video,
-                         alert_desc, lga_id)
-                      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                         alert_desc, lga_id, latitude, longitude)
+                      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = $this->dbconn->prepare($query);
             $stmt->execute([
                 $user_id, $fullname, $phone, $location, $emergency,
-                $status, $time, $imageName, $videoName, $description, $lga
+                $status, $time, $imageName, $videoName, $description, $lga,
+                $latitude !== null && $latitude !== '' ? $latitude : null,
+                $longitude !== null && $longitude !== '' ? $longitude : null
             ]);
 
             return $this->dbconn->lastInsertId() ? (int) $lga : 0;
@@ -192,5 +196,65 @@ class Incident extends Db
         $stmt = $this->dbconn->prepare($sql);
         $stmt->execute([$lga_id]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /* ---------------- Cross-location resolution ---------------- */
+
+    /**
+     * Resolve an LGA id to its name and parent state. Returns null if unknown.
+     */
+    public function get_location($lga_id)
+    {
+        $sql = "SELECT l.lga_id, l.lga_name, s.state_id, s.state_name
+                FROM lga l
+                LEFT JOIN state s ON s.state_id = l.state_id
+                WHERE l.lga_id = ?";
+        $stmt = $this->dbconn->prepare($sql);
+        $stmt->execute([$lga_id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+    }
+
+    /**
+     * Find response units for an emergency, widening the search so reports are
+     * useful across every location: first the exact LGA, then – if none are
+     * registered there – every unit in the same state.
+     *
+     * @param string $type one of 'medical', 'fire', 'police'
+     * @return array{units: array, scope: string} scope is 'lga', 'state' or 'none'
+     */
+    public function find_units($type, $lga_id)
+    {
+        $map = [
+            'medical' => ['medical_unit', 'medical_unit_location'],
+            'fire'    => ['fire_unit', 'fire_unit_location'],
+            'police'  => ['police_unit', 'police_unit_location'],
+        ];
+        if (!isset($map[$type])) {
+            return ['units' => [], 'scope' => 'none'];
+        }
+        [$table, $locCol] = $map[$type];
+
+        // 1) Exact LGA match.
+        $sql = "SELECT u.*, lga.lga_name
+                FROM $table u
+                JOIN lga ON lga.lga_id = u.$locCol
+                WHERE u.$locCol = ?";
+        $stmt = $this->dbconn->prepare($sql);
+        $stmt->execute([$lga_id]);
+        $units = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if ($units) {
+            return ['units' => $units, 'scope' => 'lga'];
+        }
+
+        // 2) Fall back to any unit in the same state.
+        $sql = "SELECT u.*, lga.lga_name
+                FROM $table u
+                JOIN lga ON lga.lga_id = u.$locCol
+                WHERE lga.state_id = (SELECT state_id FROM lga WHERE lga_id = ?)
+                ORDER BY lga.lga_name";
+        $stmt = $this->dbconn->prepare($sql);
+        $stmt->execute([$lga_id]);
+        $units = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return ['units' => $units, 'scope' => $units ? 'state' : 'none'];
     }
 }

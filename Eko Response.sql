@@ -66,7 +66,16 @@ INSERT INTO `category` (`category_id`, `category_name`) VALUES
 (2, 'Fire'),
 (3, 'Accident'),
 (4, 'Theft/Crime'),
-(6, 'Ambulance Service');
+(6, 'Ambulance Service'),
+(7, 'Flood'),
+(8, 'Building Collapse'),
+(9, 'Road Accident'),
+(10, 'Gas Leak / Explosion'),
+(11, 'Kidnapping'),
+(12, 'Domestic Violence'),
+(13, 'Electrocution'),
+(14, 'Drowning'),
+(15, 'Civil Unrest / Riot');
 
 -- --------------------------------------------------------
 
@@ -119,7 +128,9 @@ CREATE TABLE `emergency_alert_table` (
   `alert_desc` varchar(250) DEFAULT NULL,
   `responseunit_id` int(11) DEFAULT NULL,
   `emergency_alert_comment` varchar(200) DEFAULT NULL,
-  `lga_id` int(11) DEFAULT NULL
+  `lga_id` int(11) DEFAULT NULL,
+  `latitude` decimal(10,7) DEFAULT NULL,
+  `longitude` decimal(10,7) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
