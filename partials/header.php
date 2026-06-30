@@ -72,10 +72,9 @@
            <div>
              
            </div>
-           <div class="d-flex align-items-center justify-content-end modal-btn">
-            <form action="login_signup.php" method="post">
-                    <button type="submit" class="btn btn-primary">Login</button>
-            </form>
+           <div class="d-flex align-items-center justify-content-end modal-btn gap-2">
+                <a href="login_signup.php" class="btn btn-outline-primary">Login</a>
+                <a href="login_signup.php?form=signup" class="btn btn-primary">Register</a>
            </div>
         </nav>
     </header>

@@ -205,6 +205,15 @@ $fetch=$state1 -> get_state();
     $back_to_login_link = $form_forgot_password.find('.form-bottom-message a'),
     $main_nav = $('.main-nav');
 
+  // Open the modal automatically, on the right tab, based on ?form= in the URL.
+  var requestedForm = new URLSearchParams(window.location.search).get('form');
+  $form_modal.addClass('is-visible');
+  if (requestedForm === 'signup') {
+    signup_selected();
+  } else {
+    login_selected();
+  }
+
   //open modal
   $main_nav.on('click', function(event){
 

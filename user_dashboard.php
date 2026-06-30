@@ -235,7 +235,13 @@ $badgeClass = function ($status) {
                           <tr>
                             <th scope="row"><?php echo (int) $row['alert_id']; ?></th>
                             <td><?php echo htmlspecialchars($row['user_phone']); ?></td>
-                            <td><?php echo htmlspecialchars(trim(($row['user_location'] ?? '') . ' ' . ($row['lga_name'] ? '(' . $row['lga_name'] . ')' : ''))); ?></td>
+                            <td>
+                                <?php echo htmlspecialchars(trim(($row['user_location'] ?? '') . ' ' . ($row['lga_name'] ? '(' . $row['lga_name'] . ')' : ''))); ?>
+                                <?php if (!empty($row['latitude']) && !empty($row['longitude'])): ?>
+                                    <a class="d-block small" target="_blank" rel="noopener"
+                                       href="https://www.google.com/maps?q=<?php echo $row['latitude']; ?>,<?php echo $row['longitude']; ?>">📍 View on map</a>
+                                <?php endif; ?>
+                            </td>
                             <td><span class="badge bg-danger"><?php echo htmlspecialchars($row['category_name'] ?? 'Emergency'); ?></span></td>
                             <td><?php echo htmlspecialchars($row['alert_time'] ?? ''); ?></td>
                             <td><span class="badge <?php echo $badgeClass($row['alert_status']); ?>"><?php echo htmlspecialchars($row['alert_status'] ?? 'pending'); ?></span></td>

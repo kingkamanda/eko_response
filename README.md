@@ -32,8 +32,13 @@ Administrators manage users and emergencies from a dedicated dashboard.
 ├── incident_media/        Uploaded incident photos/videos
 ├── Eko Response.sql       Database schema + seed data
 ├── seed_demo.sql          Optional demo account + sample emergencies
+├── upgrade.sql            Schema upgrade for existing databases
+├── SETUP.md               Detailed step-by-step setup guide
 └── Eko Response ERD.png   Entity-relationship diagram
 ```
+
+> New here or hitting a database error? Follow **[SETUP.md](SETUP.md)** for a
+> detailed, OS-specific walkthrough.
 
 ## Getting started
 

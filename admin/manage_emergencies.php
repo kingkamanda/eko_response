@@ -90,7 +90,13 @@ $badgeClass = function ($status) {
                                 <td><?php echo htmlspecialchars($e['reporter'] ?? $e['user_fullname'] ?? 'Unknown'); ?></td>
                                 <td><?php echo htmlspecialchars($e['category_name'] ?? '—'); ?></td>
                                 <td><?php echo htmlspecialchars($e['user_phone'] ?? ''); ?></td>
-                                <td><?php echo htmlspecialchars(trim(($e['user_location'] ?? '') . ' ' . ($e['lga_name'] ? '(' . $e['lga_name'] . ')' : ''))); ?></td>
+                                <td>
+                                    <?php echo htmlspecialchars(trim(($e['user_location'] ?? '') . ' ' . ($e['lga_name'] ? '(' . $e['lga_name'] . ')' : ''))); ?>
+                                    <?php if (!empty($e['latitude']) && !empty($e['longitude'])): ?>
+                                        <a class="d-block small" target="_blank" rel="noopener"
+                                           href="https://www.google.com/maps?q=<?php echo $e['latitude']; ?>,<?php echo $e['longitude']; ?>">📍 View on map</a>
+                                    <?php endif; ?>
+                                </td>
                                 <td><?php echo htmlspecialchars($e['alert_time'] ?? ''); ?></td>
                                 <td><span class="badge <?php echo $badgeClass($e['alert_status']); ?>"><?php echo htmlspecialchars($e['alert_status'] ?? 'pending'); ?></span></td>
                                 <td>

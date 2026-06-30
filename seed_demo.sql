@@ -34,8 +34,8 @@ SET @demo_id = (SELECT user_id FROM User WHERE user_email = 'demo@ekoresponse.te
 -- response units. emergency_type: 1 Medical, 2 Fire, 4 Theft/Crime.
 INSERT INTO emergency_alert_table
     (user_id, user_fullname, user_phone, user_location, emergency_type,
-     alert_status, alert_time, alert_desc, lga_id)
+     alert_status, alert_time, alert_desc, lga_id, latitude, longitude)
 VALUES
-    (@demo_id, 'Demo User', '08030000000', 'Allen Avenue, Ikeja',      1, 'pending',  NOW(), 'Elderly relative collapsed, needs an ambulance.', 513),
-    (@demo_id, 'Demo User', '08030000000', 'Lekki Phase 1, Eti-Osa',   2, 'enroute',  NOW(), 'Kitchen fire spreading to the next room.',        510),
-    (@demo_id, 'Demo User', '08030000000', 'Wharf Road, Apapa',        4, 'resolved', NOW(), 'Phone snatched at a bus stop.',                   507);
+    (@demo_id, 'Demo User', '08030000000', 'Allen Avenue, Ikeja',      1, 'pending',  NOW(), 'Elderly relative collapsed, needs an ambulance.', 513, 6.6018000, 3.3515000),
+    (@demo_id, 'Demo User', '08030000000', 'Lekki Phase 1, Eti-Osa',   2, 'enroute',  NOW(), 'Kitchen fire spreading to the next room.',        510, 6.4474000, 3.4736000),
+    (@demo_id, 'Demo User', '08030000000', 'Wharf Road, Apapa',        4, 'resolved', NOW(), 'Phone snatched at a bus stop.',                   507, 6.4419000, 3.3590000);

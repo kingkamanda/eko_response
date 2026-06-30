@@ -23,7 +23,11 @@ unset($_SESSION['errormsg']);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Report an Emergency - Eko Response</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style> body { background-color: #f8f9fa; } </style>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        body { background-color: #f8f9fa; }
+        #map { height: 280px; border-radius: .5rem; }
+    </style>
 </head>
 <body>
     <?php require_once 'partials/logo.php'; ?>
@@ -67,6 +71,21 @@ unset($_SESSION['errormsg']);
                             <option value="">Select a state first</option>
                         </select>
                     </div>
+
+                    <!-- Pinpoint the exact spot of the emergency -->
+                    <div class="form-group mt-3">
+                        <label class="d-block">Pinpoint location on the map</label>
+                        <button type="button" id="useMyLocation" class="btn btn-outline-primary btn-sm mb-2">
+                            📍 Use my current location
+                        </button>
+                        <div id="map"></div>
+                        <small class="text-muted d-block mt-1" id="coordsLabel">
+                            Drag the marker, click the map, or use the button above to set the exact location.
+                        </small>
+                        <input type="hidden" name="latitude"  id="latitude">
+                        <input type="hidden" name="longitude" id="longitude">
+                    </div>
+
                     <div class="form-group mt-3">
                         <label for="emergency">Emergency Type</label>
                         <select class="form-select" id="emergency" name="emergency_type" required>
@@ -133,6 +152,56 @@ unset($_SESSION['errormsg']);
                         $lga.append('<option value="' + lga.lga_id + '">' + lga.lga_name + '</option>');
                     });
                 }
+            });
+        });
+    </script>
+
+    <!-- Leaflet map for pinpointing the emergency location (OpenStreetMap, no API key needed) -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Default view: Lagos, Nigeria.
+        var defaultLatLng = [6.5244, 3.3792];
+        var map = L.map('map').setView(defaultLatLng, 11);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+        var marker = L.marker(defaultLatLng, { draggable: true }).addTo(map);
+
+        function setCoords(lat, lng) {
+            document.getElementById('latitude').value = lat.toFixed(7);
+            document.getElementById('longitude').value = lng.toFixed(7);
+            document.getElementById('coordsLabel').textContent =
+                'Selected location: ' + lat.toFixed(5) + ', ' + lng.toFixed(5);
+        }
+
+        // Drag the marker to set the spot.
+        marker.on('dragend', function (e) {
+            var p = e.target.getLatLng();
+            setCoords(p.lat, p.lng);
+        });
+
+        // Click anywhere on the map to move the marker.
+        map.on('click', function (e) {
+            marker.setLatLng(e.latlng);
+            setCoords(e.latlng.lat, e.latlng.lng);
+        });
+
+        // Use the browser's geolocation to jump to the user's position.
+        document.getElementById('useMyLocation').addEventListener('click', function () {
+            if (!navigator.geolocation) {
+                alert('Geolocation is not supported by your browser.');
+                return;
+            }
+            navigator.geolocation.getCurrentPosition(function (pos) {
+                var lat = pos.coords.latitude, lng = pos.coords.longitude;
+                map.setView([lat, lng], 16);
+                marker.setLatLng([lat, lng]);
+                setCoords(lat, lng);
+            }, function () {
+                alert('Could not get your location. You can still drop a pin on the map manually.');
             });
         });
     </script>
