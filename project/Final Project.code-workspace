@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../../../../Applications/XAMPP/xamppfiles/htdocs/php_basics"
+		},
+		{
+			"path": "../../../../Applications/XAMPP/xamppfiles/htdocs/tutorials"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "Final Project"
+	}
+}

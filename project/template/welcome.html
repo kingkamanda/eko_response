@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="animate.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <title>Document</title>
+    <style>
+        /* Navigation Menu */
+.nav-link {
+  color: #333;
+  padding: 0.5rem 1rem;
+  transition: background-color 0.3s;
+}
+
+.nav-link:hover {
+  background-color: #f5f5f5;
+}
+
+/* Summary Metrics */
+.text-success {
+  font-weight: bold;
+}
+
+/* Incident List */
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.badge {
+  font-weight: normal;
+}
+
+.bg-danger {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+/* Pagination */
+.pagination .page-link {
+  color: #333;
+}
+
+.pagination .page-item.active .page-link {
+  background-color: #007bff;
+  border-color: #007bff;
+  color: #fff;
+}
+
+.pagination .page-item.disabled .page-link {
+  color: #6c757d;
+  pointer-events: none;
+  cursor: auto;
+}
+    
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">LOGO</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll"
+                    aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <!-- <div class="collapse navbar-collapse " id="navbarScroll">
+                    <div class="me-auto">
+                    <ul class="navbar-nav  my-2 my-lg-0 navbar-nav-scroll " style="--bs-scroll-height: 100px;">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="#">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">About Us</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Contact</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Link</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                Emergency Unit
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">Fire</a></li>
+                                <li><a class="dropdown-item" href="#">Police</a></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li><a class="dropdown-item" href="#">Hospitals</a></li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                    </div>
+                    <form class="d-flex" role="search">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-success" type="submit">Search</button>
+                        <button class="btn btn-outline-success" type="submit">Login</button>
+                        <button class="btn btn-outline-success" type="submit">Sign </button>
+                    </form>
+                </div> -->
+            </div>
+        </nav>
+        
+
+        <div class="container-fluid">
+  <div class="row">
+    <div class="col-md-3">
+      <!-- Navigation Menu -->
+      <nav class="nav flex-column">
+        <a class="nav-link" href="#">Task List</a>
+        <a class="nav-link" href="#">Requests</a>
+        <!-- Add more navigation links -->
+      </nav>
+    </div>
+    <div class="col-md-9">
+      <div class="row">
+        <div class="col-md-12">
+          <!-- Summary Metrics -->
+          <div class="d-flex justify-content-around mb-3">
+            <div class="text-center">
+              <h6>Avg. Response Time</h6>
+              <p class="mb-0">10 mins</p>
+              <small class="text-success">10% &uarr;</small>
+            </div>
+            <!-- Add more metric cards -->
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <!-- Incident Filters -->
+          <div class="d-flex justify-content-between mb-3">
+            <input type="text" class="form-control" placeholder="Search">
+            <select class="form-select">
+              <option value="">Select Country</option>
+              <option value="all">All</option>
+              <!-- Add more country options -->
+            </select>
+            <!-- Add more filter dropdowns -->
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <!-- Incident List -->
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Reference</th>
+                <th>Status</th>
+                <!-- Add more table headers -->
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>#US011589</td>
+                <td><span class="badge bg-danger">NEW</span></td>
+                <!-- Add more table data -->
+              </tr>
+              <!-- Add more incident rows -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <!-- Pagination -->
+          <nav>
+            <ul class="pagination justify-content-center">
+              <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1">Previous</a>
+              </li>
+              <li class="page-item active"><a class="page-link" href="#">1</a></li>
+              <li class="page-item"><a class="page-link" href="#">2</a></li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item">
+                <a class="page-link" href="#">Next</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+            <div class="">
+                <div class="bg order-1 order-md-2" style="background-image: url('images/image_1.jpeg"></div>
+                    <div class="contents order-2 order-md-1">
+
+                        <div class="container">
+                            <div class="row align-items-center justify-content-center">
+                                <div class="col-md-10">
+                                    <div class="mb-4">
+                                        <h3>Sign In</h3>
+                                        <p class="mb-4">Lorem ipsum dolor sit amet elit. Sapiente sit aut eos
+                                            consectetur adipisicing.</p>
+                                    </div>
+                                    <form action="#" method="post">
+                                        <div class="form-group upper">
+                                            <label for="username">Username</label>
+                                            <input type="text" class="form-control" id="username">
+
+                                        </div>
+                                        <div class="form-group lower mb-3">
+                                            <label for="password">Password</label>
+                                            <input type="password" class="form-control" id="password">
+
+                                        </div>
+
+                                        <div class="d-flex mb-5 align-items-center">
+                                            <label class="control  mb-0"><span class="caption">Remember me</span>
+                                                <input type="checkbox" checked="checked" />
+                                                <div class="control__indicator"></div>
+                                            </label>
+                                            <span class="ml-auto"><a href="#" class="forgot-pass">Forgot
+                                                    Password</a></span>
+                                        </div>
+
+                                        <input type="submit" value="Log In" class="btn btn-block btn-primary">
+
+                                        <span class="d-block text-center my-4 text-muted">&mdash; or &mdash;</span>
+
+                                        <div class="social-media-login">
+                                            <a href="#"
+                                                class="facebook btn btn-dark d-flex justify-content-center align-items-center">
+                                                <span class="icon-facebook mr-3"></span> Login with Facebook
+                                            </a>
+                                            <a href="#"
+                                                class="twitter btn d-flex justify-content-center align-items-center">
+                                                <span class="icon-twitter mr-3"></span> Login with Twitter
+                                            </a>
+                                            <a href="#"
+                                                class="google btn d-flex justify-content-center align-items-center">
+                                                <span class="icon-google mr-3"></span> Login with Google
+                                            </a>
+                                        </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+             </div>
+        </div>
+
+
+    </div>
+    </div>
+
+
+    </div>
+
+
+    <script src="jquery-3.7.1.js"></script>
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>

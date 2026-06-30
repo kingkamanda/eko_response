@@ -1,0 +1,210 @@
+PHP FORM
+//To retrieve form array
+*always give name to you form.
+<?php echo $_GET['name']?>
+<?php echo $_POST['name']?>
+
+YOU CAN RETRIEVE THE VARIABLE AT THE TOP OF THE PAGE WE ARE SUBMITTING TO E.G 
+$fullname = $_GET['fullname'];
+$message = $_GET['content'];
+
+INORDER NOT TO ALLOW DIRECT VISITATION TO YOUR FORM
+use if statement eg
+<?php
+if ($_POST) {
+    echo "Form was submitted";
+} else {
+   echo "You cannot visit this page directly";
+}
+
+die();
+?>
+
+ALWAYS DO THIS
+
+error_reporting(E_ALL);
+echo "<pre>";
+print_r($_POST);
+echo "</pre>";
+
+
+OR WE USE FUNCTION t
+if ($_POST) {
+    echo "Form was submitted";
+} else {
+  header("location:form.php");
+}
+
+
+HOW TO RETRIEVE DATA
+<?php
+if ($_POST['btn_news']) {
+    $fullname = $_POST['name'];
+    $email = $_POST['email'];
+}else {
+    header("location:classquiz1.php");
+}
+?>
+
+
+dont just use if =$POST We should rather use SUPER GLOBAL $_POST[btn-NAME], whether you are using post or get
+CLASS QUIZ
+<?php
+if($_POST){
+    $fullname
+}
+
+
+QUIZ 1 CREATING A FORM WITH PHP
+<?php
+error_reporting(E_ALL);
+
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <title>Form Submission</title>
+</head>
+<body>
+
+
+<h1>BIO DATA</h1>
+<form action="welcome.php" method="post">
+   <div class="col-4"> <label for="name">Fullname</label>
+    <input type="text" name="fullname" class="form-control" ></div>
+
+    <div class="col-4">
+       <label for="gender">Gender:</label>
+        <select name="gender" id="gender">
+        <option value="">Please select...</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+        </select>
+    </div>
+
+    <div class="col-4 mt-5">
+        <button type="submit"class="btn btn-primary col-md-12" name="btnsubmit" value="1">Submit</button>
+    </div>
+</form>
+
+
+    
+</body>
+
+</html>
+
+
+
+<?php
+
+
+//retieve form data
+if ($_POST['btnsubmit']) {
+    $fullname = $_POST['fullname'];
+    $gender = $_POST['gender'];
+}else {
+    //SENDS BACK TO THE FORM IF CONDITION IS NOT MET
+    header("location:classquiz1.php");
+}
+
+
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submission Page</title>
+</head>
+<body>
+<p><?php echo "weldone".$fullname;?> </p>
+<?php
+    if ($gender == "female") {
+       echo "<img src='female_avatar.png' width='200'> ";
+    }elseif ($gender == "male") {
+        echo "<img src='male_avatar.png' width='200'> ";
+    }
+       
+?>
+</body>
+</html>
+
+
+QUIZ 2
+SECOND PAGE
+RETRIEVE DATA
+<?php
+if ($_POST['btn_news']) {
+    $fullname = $_POST['name'];
+    $email = $_POST['email'];
+}else {
+    header("location:classquiz1.php");
+}
+?>
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+            
+                <?php
+                if (($fullname == "") && ($email =="")){
+                    echo "<p>Your form could not be submitted, the following fields were empty:Name, Email Please <a href=''>click here </a>to try again</p>";
+                } else {
+                    echo"<p>Your email, $email has been added to our subscription list.</p>";
+                }
+                
+                    
+
+                ?>
+            </div>
+        
+        </div>
+    
+    </div>
+</body>
+</html>
+
+
+
+FIRST PAGE
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-5">
+        <form action="newsletter_submit.php" method="post">
+            <div class="mb-3">
+                <label for="">Enter your name</label>
+                <input type="text" name="name"  class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label for="">Enter your Email</label>
+                <input type="email" name="email"  class="form-control">
+            </div>
+            <div>
+                <input type="submit" value="subscribe" name="btn_news" class="btn btn-danger">
+            </div>
+        
+        </form>
+        </div>
+    </div>
+</div>
+
+
+
+
