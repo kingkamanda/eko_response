@@ -193,4 +193,64 @@ class Incident extends Db
         $stmt->execute([$lga_id]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    /* ---------------- Cross-location resolution ---------------- */
+
+    /**
+     * Resolve an LGA id to its name and parent state. Returns null if unknown.
+     */
+    public function get_location($lga_id)
+    {
+        $sql = "SELECT l.lga_id, l.lga_name, s.state_id, s.state_name
+                FROM lga l
+                LEFT JOIN state s ON s.state_id = l.state_id
+                WHERE l.lga_id = ?";
+        $stmt = $this->dbconn->prepare($sql);
+        $stmt->execute([$lga_id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+    }
+
+    /**
+     * Find response units for an emergency, widening the search so reports are
+     * useful across every location: first the exact LGA, then – if none are
+     * registered there – every unit in the same state.
+     *
+     * @param string $type one of 'medical', 'fire', 'police'
+     * @return array{units: array, scope: string} scope is 'lga', 'state' or 'none'
+     */
+    public function find_units($type, $lga_id)
+    {
+        $map = [
+            'medical' => ['medical_unit', 'medical_unit_location'],
+            'fire'    => ['fire_unit', 'fire_unit_location'],
+            'police'  => ['police_unit', 'police_unit_location'],
+        ];
+        if (!isset($map[$type])) {
+            return ['units' => [], 'scope' => 'none'];
+        }
+        [$table, $locCol] = $map[$type];
+
+        // 1) Exact LGA match.
+        $sql = "SELECT u.*, lga.lga_name
+                FROM $table u
+                JOIN lga ON lga.lga_id = u.$locCol
+                WHERE u.$locCol = ?";
+        $stmt = $this->dbconn->prepare($sql);
+        $stmt->execute([$lga_id]);
+        $units = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if ($units) {
+            return ['units' => $units, 'scope' => 'lga'];
+        }
+
+        // 2) Fall back to any unit in the same state.
+        $sql = "SELECT u.*, lga.lga_name
+                FROM $table u
+                JOIN lga ON lga.lga_id = u.$locCol
+                WHERE lga.state_id = (SELECT state_id FROM lga WHERE lga_id = ?)
+                ORDER BY lga.lga_name";
+        $stmt = $this->dbconn->prepare($sql);
+        $stmt->execute([$lga_id]);
+        $units = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return ['units' => $units, 'scope' => $units ? 'state' : 'none'];
+    }
 }
