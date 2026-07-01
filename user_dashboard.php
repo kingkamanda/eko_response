@@ -41,19 +41,12 @@ $sevBadge = function ($s) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" type="text/css" href="./assets/static/bootstrap/css/bootstrap.min.css">
-  <link rel="stylesheet" href="animate.min.css">
-  <link rel="stylesheet" type="text/css" href="./assets/dashboard.css">
-  <link rel="stylesheet" type="text/css" href="./fontawesome/css/all.min.css">
-  <!-- ======REMIX ICON======== -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <!--=========GOOGLE FONTS===========-->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-  <!--=========GOOGLE ICONS===========-->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Icons" rel="stylesheet">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@48,400,0,0" />
-  <link rel="stylesheet" type="text/css" href="assets/static/fontawesome/css/all.min.css">
+  <link rel="stylesheet" type="text/css" href="./assets/dashboard.css">
+  <link rel="stylesheet" href="assets/static/css/app.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <title>Eko Response - User Dashboard</title>
   <style>
     .sidebar-footer {
@@ -227,13 +220,22 @@ $sevBadge = function ($s) {
             <div class="row g-3 mt-1">
               <div class="col-lg-8">
                 <div class="card border-0 shadow-sm h-100">
-                  <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                  <div class="card-header bg-white d-flex justify-content-between align-items-center flex-wrap gap-2">
                     <h5 class="mb-0">My Reported Emergencies</h5>
-                    <a href="emergency_form.php" class="btn btn-sm btn-danger">+ Report Emergency</a>
+                    <div class="d-flex gap-2">
+                      <input type="search" id="reportSearch" class="form-control form-control-sm" placeholder="Search…" style="width:150px;">
+                      <select id="statusFilter" class="form-select form-select-sm" style="width:130px;">
+                        <option value="">All statuses</option>
+                        <option value="pending">Pending</option>
+                        <option value="enroute">Enroute</option>
+                        <option value="resolved">Resolved</option>
+                      </select>
+                      <a href="emergency_form.php" class="btn btn-sm btn-brand text-nowrap">+ Report</a>
+                    </div>
                   </div>
                   <div class="card-body">
                     <div class="table-responsive">
-                      <table class="table table-striped table-bordered align-middle">
+                      <table class="table table-striped table-bordered align-middle" id="reportsTable">
                         <thead>
                           <tr>
                             <th>#ID</th>
@@ -327,15 +329,30 @@ $sevBadge = function ($s) {
 
 
 
-  <script src="jquery-3.7.1.js"></script>
-  <script src="js/jquery-3.3.1.min.js"></script>
-  <script src="js/popper.min.js"></script>
-  <script src="js/bootstrap.min.js"></script>
-  <script src="bootstrap/js/bootstrap.bundle.js"></script>
-  <script src="./assets/static/javascript/main.js"></script>
-  <script type="text/javascript"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Client-side search + status filter for the reports table.
+    (function () {
+      var search = document.getElementById('reportSearch');
+      var filter = document.getElementById('statusFilter');
+      var table  = document.getElementById('reportsTable');
+      if (!table) return;
+      var rows = Array.prototype.slice.call(table.tBodies[0].rows);
+      function apply() {
+        var q = (search.value || '').toLowerCase();
+        var s = (filter.value || '').toLowerCase();
+        rows.forEach(function (r) {
+          if (r.children.length < 6) return; // skip the empty-state row
+          var text = r.innerText.toLowerCase();
+          var status = (r.children[5].innerText || '').toLowerCase();
+          var show = text.indexOf(q) !== -1 && (s === '' || status.indexOf(s) !== -1);
+          r.style.display = show ? '' : 'none';
+        });
+      }
+      if (search) search.addEventListener('input', apply);
+      if (filter) filter.addEventListener('change', apply);
+    })();
+  </script>
 </body>
 
 </html>

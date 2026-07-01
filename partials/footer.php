@@ -8,8 +8,8 @@ ul{
         text-decoration: none;
     }
 </style>
-<section class="footer " >
-            <footer class="py-5" style="background-color: var(--black-color);">
+<section class="footer er-footer" >
+            <footer class="py-5">
                 <div class="container-fluid" >
                     <div class="row">
                         <div class="col-md-3">
