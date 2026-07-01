@@ -56,11 +56,13 @@ $pageTitle = 'Agency Dashboard - Eko Response';
                         <div class="card-body"><h6 class="mb-1">Resolved</h6><h2><?php echo $stats['resolved']; ?></h2></div>
                     </div>
                 </div>
+                <?php if (!$isResponder): // responders don't see team size ?>
                 <div class="col-6 col-md-3">
                     <div class="card stat-card shadow-sm text-white bg-dark h-100">
                         <div class="card-body"><h6 class="mb-1">Staff</h6><h2><?php echo $stats['staff']; ?></h2></div>
                     </div>
                 </div>
+                <?php endif; ?>
             </div>
 
             <div class="card shadow-sm">

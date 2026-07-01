@@ -16,6 +16,7 @@ $myIncidents    = $incidentObj->fetch_user_incidents($data);
 $totalReports   = count($myIncidents);
 $resolvedCount  = $incidentObj->count_by_status('resolved', $data);
 $pendingCount   = $totalReports - $resolvedCount;
+$pendingFeedback = $incidentObj->pending_feedback($data);
 
 $badgeClass = function ($status) {
     switch (strtolower((string) $status)) {
@@ -23,6 +24,14 @@ $badgeClass = function ($status) {
         case 'enroute':   return 'bg-warning text-dark';
         case 'severe':    return 'bg-danger';
         default:          return 'bg-secondary';
+    }
+};
+$sevBadge = function ($s) {
+    switch (strtolower((string) $s)) {
+        case 'severe':   return 'bg-danger';
+        case 'moderate': return 'bg-warning text-dark';
+        case 'mild':     return 'bg-info text-dark';
+        default:         return 'bg-secondary';
     }
 };
 ?>
@@ -168,6 +177,13 @@ $badgeClass = function ($status) {
               </div>
             </div>
 
+            <?php if (!empty($pendingFeedback)): ?>
+              <div class="alert alert-warning d-flex justify-content-between align-items-center">
+                <span><i class="fa-solid fa-star me-1"></i> You have <?php echo count($pendingFeedback); ?> resolved emergenc<?php echo count($pendingFeedback) === 1 ? 'y' : 'ies'; ?> awaiting your feedback. Feedback is required before reporting again.</span>
+                <a href="feedback.php" class="btn btn-sm btn-warning">Give feedback</a>
+              </div>
+            <?php endif; ?>
+
             <!--===============DASHBOARD CARD BEGINNING=================-->
             <div class="row g-3">
               <div class="col-6 col-lg-4">
@@ -221,17 +237,18 @@ $badgeClass = function ($status) {
                         <thead>
                           <tr>
                             <th>#ID</th>
-                            <th>Phone Number</th>
                             <th>Location</th>
                             <th>Issue</th>
+                            <th>Severity</th>
                             <th>Reported</th>
                             <th>Status</th>
+                            <th></th>
                           </tr>
                         </thead>
                         <tbody>
                           <?php if (empty($myIncidents)): ?>
                           <tr>
-                            <td colspan="6" class="text-center text-muted py-4">
+                            <td colspan="7" class="text-center text-muted py-4">
                               You haven't reported any emergencies yet.
                               <a href="emergency_form.php">Report one now.</a>
                             </td>
@@ -239,17 +256,18 @@ $badgeClass = function ($status) {
                           <?php else: foreach ($myIncidents as $row): ?>
                           <tr>
                             <th scope="row"><?php echo (int) $row['alert_id']; ?></th>
-                            <td><?php echo htmlspecialchars($row['user_phone']); ?></td>
                             <td>
                                 <?php echo htmlspecialchars(trim(($row['user_location'] ?? '') . ' ' . ($row['lga_name'] ? '(' . $row['lga_name'] . ')' : ''))); ?>
                                 <?php if (!empty($row['latitude']) && !empty($row['longitude'])): ?>
                                     <a class="d-block small" target="_blank" rel="noopener"
-                                       href="https://www.google.com/maps?q=<?php echo $row['latitude']; ?>,<?php echo $row['longitude']; ?>">📍 View on map</a>
+                                       href="https://www.google.com/maps?q=<?php echo $row['latitude']; ?>,<?php echo $row['longitude']; ?>">📍 Map</a>
                                 <?php endif; ?>
                             </td>
                             <td><span class="badge bg-danger"><?php echo htmlspecialchars($row['category_name'] ?? 'Emergency'); ?></span></td>
+                            <td><span class="badge <?php echo $sevBadge($row['severity'] ?? ''); ?>"><?php echo htmlspecialchars($row['severity'] ?? 'n/a'); ?></span></td>
                             <td><?php echo htmlspecialchars($row['alert_time'] ?? ''); ?></td>
                             <td><span class="badge <?php echo $badgeClass($row['alert_status']); ?>"><?php echo htmlspecialchars($row['alert_status'] ?? 'pending'); ?></span></td>
+                            <td><a class="btn btn-sm btn-outline-primary" href="incident_view.php?id=<?php echo (int)$row['alert_id']; ?>">Open</a></td>
                           </tr>
                           <?php endforeach; endif; ?>
                         </tbody>

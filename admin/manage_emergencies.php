@@ -75,12 +75,19 @@ $pageTitle = 'Manage Emergencies - Eko Response';
                                 <td><?php echo htmlspecialchars($e['user_phone'] ?? ''); ?></td>
                                 <td>
                                     <?php echo htmlspecialchars(trim(($e['user_location'] ?? '') . ' ' . ($e['lga_name'] ? '(' . $e['lga_name'] . ')' : ''))); ?>
-                                    <?php if (!empty($e['latitude']) && !empty($e['longitude'])): ?>
-                                        <a class="d-block small" target="_blank" rel="noopener"
-                                           href="https://www.google.com/maps?q=<?php echo $e['latitude']; ?>,<?php echo $e['longitude']; ?>">📍 View on map</a>
-                                    <?php endif; ?>
+                                    <span class="d-block small">
+                                        <?php if (!empty($e['latitude']) && !empty($e['longitude'])): ?>
+                                            <a target="_blank" rel="noopener" href="https://www.google.com/maps?q=<?php echo $e['latitude']; ?>,<?php echo $e['longitude']; ?>">📍 Map</a>
+                                        <?php endif; ?>
+                                        <?php if (!empty($e['emergency_alert_image'])): ?>
+                                            <a target="_blank" rel="noopener" href="../incident_media/<?php echo htmlspecialchars($e['emergency_alert_image']); ?>">🖼 Image</a>
+                                        <?php endif; ?>
+                                    </span>
                                 </td>
-                                <td><?php echo htmlspecialchars($e['alert_time'] ?? ''); ?></td>
+                                <td>
+                                    <?php echo htmlspecialchars($e['alert_time'] ?? ''); ?>
+                                    <?php if (!empty($e['severity'])): ?><span class="d-block small text-muted"><?php echo htmlspecialchars($e['severity']); ?></span><?php endif; ?>
+                                </td>
                                 <td><span class="badge <?php echo $badgeClass($e['alert_status']); ?>"><?php echo htmlspecialchars($e['alert_status'] ?? 'pending'); ?></span></td>
                                 <td>
                                     <form action="manage_emergencies.php" method="post" class="d-flex gap-1">

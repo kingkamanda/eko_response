@@ -228,6 +228,9 @@ class Admin extends Db
         $limit = (int) $limit;
         $sql = "SELECT l.lga_id, l.lga_name, s.state_name,
                        COUNT(e.alert_id) AS total,
+                       SUM(e.alert_time >= (NOW() - INTERVAL 1 DAY)) AS last_24h,
+                       SUM(LOWER(e.severity) = 'severe') AS severe_count,
+                       MAX(e.alert_time) AS last_time,
                        AVG(e.latitude)  AS avg_lat,
                        AVG(e.longitude) AS avg_lng
                 FROM emergency_alert_table e
@@ -235,18 +238,36 @@ class Admin extends Db
                 LEFT JOIN state s ON s.state_id = l.state_id
                 GROUP BY e.lga_id, l.lga_name, s.state_name
                 HAVING total >= ?
-                ORDER BY total DESC
+                ORDER BY last_24h DESC, severe_count DESC, total DESC
                 LIMIT $limit";
         $stmt = $this->dbconnect->prepare($sql);
         $stmt->execute([$threshold]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    /** Priority incidents (last 24h, severity first). */
+    public function priority_incidents($limit = 50)
+    {
+        $limit = (int) $limit;
+        $sql = "SELECT e.*, c.category_name, l.lga_name, s.state_name
+                FROM emergency_alert_table e
+                LEFT JOIN category c ON c.category_id = e.emergency_type
+                LEFT JOIN lga l ON l.lga_id = e.lga_id
+                LEFT JOIN state s ON s.state_id = l.state_id
+                WHERE e.alert_time >= (NOW() - INTERVAL 1 DAY)
+                ORDER BY CASE LOWER(e.severity)
+                             WHEN 'severe' THEN 1 WHEN 'moderate' THEN 2
+                             WHEN 'mild' THEN 3 ELSE 4 END,
+                         e.alert_time DESC
+                LIMIT $limit";
+        return $this->dbconnect->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     /** Individual reported points (those with coordinates) for plotting. */
     public function incident_points($limit = 500)
     {
         $limit = (int) $limit;
-        $sql = "SELECT e.latitude, e.longitude, c.category_name, e.alert_status
+        $sql = "SELECT e.latitude, e.longitude, c.category_name, e.alert_status, e.severity
                 FROM emergency_alert_table e
                 LEFT JOIN category c ON c.category_id = e.emergency_type
                 WHERE e.latitude IS NOT NULL AND e.longitude IS NOT NULL
