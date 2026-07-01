@@ -43,11 +43,11 @@ $typeOptions = ['police' => 'Police', 'fire' => 'Fire', 'medical' => 'Medical', 
 <div class="container-fluid">
     <div class="row">
         <?php $active = 'agencies'; require "partials/sidebar.php"; ?>
-        <main class="col-md-10 px-4 py-4">
+        <main class="col-md-10 er-shell px-3 px-md-4 py-4">
             <h3 class="mb-3">Agencies</h3>
             <?php if ($feedback): ?><div class="alert alert-success"><?php echo htmlspecialchars($feedback); ?></div><?php endif; ?>
 
-            <div class="card shadow-sm mb-4">
+            <div class="card er-card mb-4">
                 <div class="card-header"><h5 class="mb-0">Onboard a new agency</h5></div>
                 <div class="card-body">
                     <form method="post" class="row g-2 align-items-end">
@@ -70,10 +70,10 @@ $typeOptions = ['police' => 'Police', 'fire' => 'Fire', 'medical' => 'Medical', 
                 </div>
             </div>
 
-            <div class="card shadow-sm">
+            <div class="card er-card">
                 <div class="card-header"><h5 class="mb-0">All agencies</h5></div>
                 <div class="card-body table-responsive">
-                    <table class="table table-striped align-middle">
+                    <table class="table er-table table-hover align-middle">
                         <thead><tr><th>Agency</th><th>Type</th><th>State</th><th>Phone</th><th>Staff</th><th>Actions</th></tr></thead>
                         <tbody>
                         <?php foreach ($agencies as $a): ?>

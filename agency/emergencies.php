@@ -53,13 +53,13 @@ $pageTitle = 'Emergencies - Eko Response';
 <div class="container-fluid">
     <div class="row">
         <?php $active = 'emergencies'; require "partials/sidebar.php"; ?>
-        <main class="col-md-10 px-4 py-4">
+        <main class="col-md-10 er-shell px-3 px-md-4 py-4">
             <h3 class="mb-3">Emergencies &mdash; <?php echo htmlspecialchars($agencyName); ?></h3>
             <?php if ($feedback): ?><div class="alert alert-success"><?php echo htmlspecialchars($feedback); ?></div><?php endif; ?>
 
-            <div class="card shadow-sm">
+            <div class="card er-card">
                 <div class="card-body table-responsive">
-                    <table class="table table-striped align-middle">
+                    <table class="table er-table table-hover align-middle">
                         <thead>
                             <tr><th>#</th><th>Type</th><th>Location</th><th>Status</th><th>Assign responder</th><th>Set status</th><th></th></tr>
                         </thead>

@@ -43,7 +43,7 @@ $pageTitle = 'Emergency Detail - Eko Response';
 <div class="container-fluid">
     <div class="row">
         <?php $active = $staffRole === 'responder' ? 'assigned' : 'emergencies'; require "partials/sidebar.php"; ?>
-        <main class="col-md-10 px-4 py-4">
+        <main class="col-md-10 er-shell px-3 px-md-4 py-4">
             <?php if (!empty($notFound)): ?>
                 <div class="alert alert-warning">Emergency not found, or it isn't handled by your agency.</div>
                 <a href="dashboard.php" class="btn btn-outline-secondary">Back</a>
@@ -56,7 +56,7 @@ $pageTitle = 'Emergency Detail - Eko Response';
 
                 <div class="row g-4">
                     <div class="col-md-6">
-                        <div class="card shadow-sm h-100">
+                        <div class="card er-card h-100">
                             <div class="card-header"><h5 class="mb-0">Details</h5></div>
                             <div class="card-body">
                                 <dl class="row mb-0">
@@ -85,7 +85,7 @@ $pageTitle = 'Emergency Detail - Eko Response';
                     </div>
 
                     <div class="col-md-6">
-                        <div class="card shadow-sm h-100">
+                        <div class="card er-card h-100">
                             <div class="card-header"><h5 class="mb-0">Add response / update status</h5></div>
                             <div class="card-body">
                                 <form method="post" enctype="multipart/form-data">
@@ -114,7 +114,7 @@ $pageTitle = 'Emergency Detail - Eko Response';
                     </div>
                 </div>
 
-                <div class="card shadow-sm mt-4">
+                <div class="card er-card mt-4">
                     <div class="card-header"><h5 class="mb-0">Tracking timeline</h5></div>
                     <div class="card-body">
                         <?php if (empty($timeline)): ?>

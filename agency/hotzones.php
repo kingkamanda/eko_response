@@ -24,15 +24,15 @@ $pageTitle  = 'Hot Zones - Eko Response';
 <div class="container-fluid">
     <div class="row">
         <?php $active = 'hotzones'; require "partials/sidebar.php"; ?>
-        <main class="col-md-10 px-4 py-4">
+        <main class="col-md-10 er-shell px-3 px-md-4 py-4">
             <h3 class="mb-1">Hot Zones &mdash; <?php echo htmlspecialchars($agencyName); ?></h3>
             <p class="text-muted">Areas with the most emergencies handled by your agency.</p>
 
-            <div class="card shadow-sm mb-4"><div class="card-body"><div id="map"></div></div></div>
+            <div class="card er-card mb-4"><div class="card-body"><div id="map"></div></div></div>
 
-            <div class="card shadow-sm">
+            <div class="card er-card">
                 <div class="card-body table-responsive">
-                    <table class="table table-striped align-middle">
+                    <table class="table er-table table-hover align-middle">
                         <thead><tr><th>#</th><th>LGA</th><th>State</th><th>Reports</th></tr></thead>
                         <tbody>
                         <?php if (empty($zones)): ?>

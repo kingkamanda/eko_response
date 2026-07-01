@@ -47,22 +47,22 @@ $pageTitle = 'Platform - Eko Response';
 <div class="container-fluid">
     <div class="row">
         <?php $active = 'platform'; require "partials/sidebar.php"; ?>
-        <main class="col-md-10 px-4 py-4">
+        <main class="col-md-10 er-shell px-3 px-md-4 py-4">
             <h3 class="mb-1">Platform Overview</h3>
             <p class="text-muted">All emergencies across every agency. Flag anything unresponded or unresolved for review.</p>
             <?php if ($feedback): ?><div class="alert alert-success"><?php echo htmlspecialchars($feedback); ?></div><?php endif; ?>
 
             <div class="row g-3 mb-4">
-                <div class="col-6 col-md-3"><div class="card stat-card shadow-sm text-white bg-primary h-100"><div class="card-body"><h6 class="mb-1">Total</h6><h2><?php echo $stats['total']; ?></h2></div></div></div>
-                <div class="col-6 col-md-3"><div class="card stat-card shadow-sm text-white bg-warning h-100"><div class="card-body"><h6 class="mb-1">Pending</h6><h2><?php echo $stats['pending']; ?></h2></div></div></div>
-                <div class="col-6 col-md-3"><div class="card stat-card shadow-sm text-white bg-success h-100"><div class="card-body"><h6 class="mb-1">Resolved</h6><h2><?php echo $stats['resolved']; ?></h2></div></div></div>
-                <div class="col-6 col-md-3"><div class="card stat-card shadow-sm text-white bg-danger h-100"><div class="card-body"><h6 class="mb-1">Flagged</h6><h2><?php echo $stats['flagged']; ?></h2></div></div></div>
+                <div class="col-6 col-md-3"><div class="card er-stat h-100"><div class="card-body d-flex align-items-center"><span class="er-stat-icon text-primary me-3"><i class="fa-solid fa-layer-group"></i></span><div><div class="er-stat-value"><?php echo $stats['total']; ?></div><div class="er-stat-label">Total</div></div></div></div></div>
+                <div class="col-6 col-md-3"><div class="card er-stat h-100"><div class="card-body d-flex align-items-center"><span class="er-stat-icon text-warning me-3"><i class="fa-solid fa-hourglass-half"></i></span><div><div class="er-stat-value"><?php echo $stats['pending']; ?></div><div class="er-stat-label">Pending</div></div></div></div></div>
+                <div class="col-6 col-md-3"><div class="card er-stat h-100"><div class="card-body d-flex align-items-center"><span class="er-stat-icon text-success me-3"><i class="fa-solid fa-circle-check"></i></span><div><div class="er-stat-value"><?php echo $stats['resolved']; ?></div><div class="er-stat-label">Resolved</div></div></div></div></div>
+                <div class="col-6 col-md-3"><div class="card er-stat h-100"><div class="card-body d-flex align-items-center"><span class="er-stat-icon text-danger me-3"><i class="fa-solid fa-flag"></i></span><div><div class="er-stat-value"><?php echo $stats['flagged']; ?></div><div class="er-stat-label">Flagged</div></div></div></div></div>
             </div>
 
-            <div class="card shadow-sm">
+            <div class="card er-card">
                 <div class="card-header"><h5 class="mb-0">All emergencies</h5></div>
                 <div class="card-body table-responsive">
-                    <table class="table table-striped align-middle">
+                    <table class="table er-table table-hover align-middle">
                         <thead><tr><th>#</th><th>Type</th><th>Agency</th><th>Location</th><th>Status</th><th>Assigned</th><th>Flag</th></tr></thead>
                         <tbody>
                         <?php if (empty($rows)): ?>

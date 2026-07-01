@@ -25,12 +25,12 @@ $pageTitle = 'Support Inbox - Eko Response';
 <div class="container-fluid">
     <div class="row">
         <?php $active = 'support'; require "partials/sidebar.php"; ?>
-        <main class="col-md-10 px-4 py-4">
+        <main class="col-md-10 er-shell px-3 px-md-4 py-4">
             <h3 class="mb-3">Support Inbox</h3>
             <div class="row g-3">
                 <!-- Conversation list -->
                 <div class="col-md-4">
-                    <div class="card shadow-sm">
+                    <div class="card er-card">
                         <div class="card-header"><h6 class="mb-0">Conversations</h6></div>
                         <div class="list-group list-group-flush">
                             <?php if (empty($conversations)): ?>
@@ -52,7 +52,7 @@ $pageTitle = 'Support Inbox - Eko Response';
 
                 <!-- Conversation view -->
                 <div class="col-md-8">
-                    <div class="card shadow-sm">
+                    <div class="card er-card">
                         <div class="card-body">
                             <?php if (!$openUser): ?>
                                 <p class="text-muted mb-0">Select a conversation to view and reply.</p>

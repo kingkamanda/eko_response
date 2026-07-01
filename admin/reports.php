@@ -66,7 +66,7 @@ $hourData   = array_map(function ($h) use ($hourMap) { return $hourMap[$h] ?? 0;
 <div class="container-fluid">
     <div class="row">
         <?php $active = 'reports'; require "partials/sidebar.php"; ?>
-        <main class="col-md-10 px-4 py-4">
+        <main class="col-md-10 er-shell px-3 px-md-4 py-4">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h3 class="mb-0">Reports &amp; Analytics</h3>
                 <a href="reports.php?export=csv" class="btn btn-success">⬇ Export detailed CSV</a>
@@ -77,39 +77,39 @@ $hourData   = array_map(function ($h) use ($hourMap) { return $hourMap[$h] ?? 0;
 
             <div class="row g-4">
                 <div class="col-md-6">
-                    <div class="card shadow-sm">
+                    <div class="card er-card">
                         <div class="card-header"><h5 class="mb-0">Emergencies by type</h5></div>
                         <div class="card-body"><canvas id="typeChart"></canvas></div>
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="card shadow-sm">
+                    <div class="card er-card">
                         <div class="card-header"><h5 class="mb-0">Emergencies by responsible agency</h5></div>
                         <div class="card-body"><canvas id="agencyChart"></canvas></div>
                     </div>
                 </div>
 
                 <div class="col-md-4">
-                    <div class="card shadow-sm">
+                    <div class="card er-card">
                         <div class="card-header"><h5 class="mb-0">By reporter gender</h5></div>
                         <div class="card-body"><canvas id="genderChart"></canvas></div>
                     </div>
                 </div>
                 <div class="col-md-8">
-                    <div class="card shadow-sm">
+                    <div class="card er-card">
                         <div class="card-header"><h5 class="mb-0">By hour of day</h5></div>
                         <div class="card-body"><canvas id="hourChart"></canvas></div>
                     </div>
                 </div>
                 <div class="col-md-12">
-                    <div class="card shadow-sm">
+                    <div class="card er-card">
                         <div class="card-header"><h5 class="mb-0">By month</h5></div>
                         <div class="card-body"><canvas id="monthChart"></canvas></div>
                     </div>
                 </div>
 
                 <div class="col-md-6">
-                    <div class="card shadow-sm">
+                    <div class="card er-card">
                         <div class="card-header"><h5 class="mb-0">By status</h5></div>
                         <div class="card-body table-responsive">
                             <table class="table table-sm">
@@ -124,7 +124,7 @@ $hourData   = array_map(function ($h) use ($hourMap) { return $hourMap[$h] ?? 0;
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="card shadow-sm">
+                    <div class="card er-card">
                         <div class="card-header"><h5 class="mb-0">Top locations (LGA)</h5></div>
                         <div class="card-body table-responsive">
                             <table class="table table-sm">

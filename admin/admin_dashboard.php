@@ -33,8 +33,8 @@ $pageTitle = 'Admin Dashboard - Eko Response';
         <?php $active = 'dashboard'; require "partials/sidebar.php"; ?>
 
         <!-- Content -->
-        <main class="col-md-10 px-4 py-4">
-            <h3 class="mb-4">Admin Dashboard</h3>
+        <main class="col-md-10 er-shell px-3 px-md-4 py-4">
+            <h3 class="er-page-title mb-4">Admin Dashboard</h3>
 
             <?php if ($feedback): ?>
                 <div class="alert alert-success"><?php echo htmlspecialchars($feedback); ?></div>
@@ -42,33 +42,45 @@ $pageTitle = 'Admin Dashboard - Eko Response';
 
             <!-- Stats -->
             <div class="row g-3 mb-4">
-                <div class="col-md-3">
-                    <div class="card stat-card shadow-sm text-white bg-primary">
-                        <div class="card-body"><h6>Total Users</h6><h2><?php echo $totalUsers; ?></h2></div>
+                <div class="col-6 col-lg-3">
+                    <div class="card er-stat">
+                        <div class="card-body d-flex align-items-center">
+                            <span class="er-stat-icon text-primary me-3"><i class="fa-solid fa-users"></i></span>
+                            <div><div class="er-stat-value"><?php echo $totalUsers; ?></div><div class="er-stat-label">Total Users</div></div>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <div class="card stat-card shadow-sm text-white bg-danger">
-                        <div class="card-body"><h6>Total Emergencies</h6><h2><?php echo $totalEmergencies; ?></h2></div>
+                <div class="col-6 col-lg-3">
+                    <div class="card er-stat">
+                        <div class="card-body d-flex align-items-center">
+                            <span class="er-stat-icon text-danger me-3"><i class="fa-solid fa-triangle-exclamation"></i></span>
+                            <div><div class="er-stat-value"><?php echo $totalEmergencies; ?></div><div class="er-stat-label">Emergencies</div></div>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <div class="card stat-card shadow-sm text-white bg-warning">
-                        <div class="card-body"><h6>Pending</h6><h2><?php echo $pending; ?></h2></div>
+                <div class="col-6 col-lg-3">
+                    <div class="card er-stat">
+                        <div class="card-body d-flex align-items-center">
+                            <span class="er-stat-icon text-warning me-3"><i class="fa-solid fa-hourglass-half"></i></span>
+                            <div><div class="er-stat-value"><?php echo $pending; ?></div><div class="er-stat-label">Pending</div></div>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <div class="card stat-card shadow-sm text-white bg-success">
-                        <div class="card-body"><h6>Resolved</h6><h2><?php echo $resolved; ?></h2></div>
+                <div class="col-6 col-lg-3">
+                    <div class="card er-stat">
+                        <div class="card-body d-flex align-items-center">
+                            <span class="er-stat-icon text-success me-3"><i class="fa-solid fa-circle-check"></i></span>
+                            <div><div class="er-stat-value"><?php echo $resolved; ?></div><div class="er-stat-label">Resolved</div></div>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <!-- Users table -->
-            <div class="card shadow-sm">
+            <div class="card er-card">
                 <div class="card-header"><h5 class="mb-0">Manage Users</h5></div>
                 <div class="card-body table-responsive">
-                    <table class="table table-striped table-hover align-middle">
+                    <table class="table er-table table-hover align-middle">
                         <thead>
                             <tr>
                                 <th>S/N</th>
