@@ -174,15 +174,16 @@ class Staff extends Db
      * Record a responder update: append to the tracking log and move the
      * emergency's current status forward.
      */
-    public function add_response($alert_id, $staff_id, $status, $note)
+    public function add_response($alert_id, $staff_id, $status, $note, $imageFile = null)
     {
         try {
+            $image = $this->saveUpload($imageFile);
             $this->dbconn->beginTransaction();
             $stmt = $this->dbconn->prepare(
-                "INSERT INTO emergency_response (alert_id, staff_id, status, note)
-                 VALUES (?, ?, ?, ?)"
+                "INSERT INTO emergency_response (alert_id, staff_id, status, note, image)
+                 VALUES (?, ?, ?, ?, ?)"
             );
-            $stmt->execute([$alert_id, $staff_id, $status, $note]);
+            $stmt->execute([$alert_id, $staff_id, $status, $note, $image]);
 
             if ($status) {
                 $this->dbconn->prepare(
@@ -198,12 +199,30 @@ class Staff extends Db
         }
     }
 
-    /** Tracking timeline for an emergency. */
+    /** Save an optional uploaded image into the shared media directory. */
+    private function saveUpload($file)
+    {
+        if (!is_array($file) || ($file['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_OK
+            || !is_uploaded_file($file['tmp_name'])) {
+            return null;
+        }
+        $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+        if (!in_array($ext, ['jpg', 'jpeg', 'png', 'gif'], true)) {
+            return null;
+        }
+        $dir = __DIR__ . '/../../incident_media';
+        if (!is_dir($dir)) { mkdir($dir, 0775, true); }
+        $name = time() . '_' . bin2hex(random_bytes(6)) . '.' . $ext;
+        return move_uploaded_file($file['tmp_name'], $dir . '/' . $name) ? $name : null;
+    }
+
+    /** Tracking timeline for an emergency (staff and reporter updates). */
     public function fetch_responses($alert_id)
     {
-        $sql = "SELECT r.*, s.fullname AS staff_name
+        $sql = "SELECT r.*, s.fullname AS staff_name, u.user_fullname AS reporter_name
                 FROM emergency_response r
                 LEFT JOIN staff s ON s.staff_id = r.staff_id
+                LEFT JOIN User u ON u.user_id = r.user_id
                 WHERE r.alert_id = ?
                 ORDER BY r.response_id DESC";
         $stmt = $this->dbconn->prepare($sql);

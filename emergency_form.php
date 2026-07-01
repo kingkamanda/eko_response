@@ -9,6 +9,13 @@ $userObj  = new User();
 $incident = new Incident();
 $stateObj = new State();
 
+// Reporters must clear pending feedback before filing a new report.
+if ($incident->has_pending_feedback($_SESSION['useronline'])) {
+    $_SESSION['errormsg'] = "Please give feedback on your resolved emergencies before reporting a new one.";
+    header("location: feedback.php");
+    exit();
+}
+
 $user       = $userObj->get_current_user($_SESSION['useronline']);
 $categories = $incident->fetch_category();
 $states     = $stateObj->get_state();

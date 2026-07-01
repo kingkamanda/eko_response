@@ -16,7 +16,15 @@ if (!isset($_POST['btnform'])) {
     exit();
 }
 
-$user_id     = $_SESSION['useronline'];
+$user_id = $_SESSION['useronline'];
+
+// Reporters must give feedback on resolved incidents before filing new ones.
+$gate = new Incident();
+if ($gate->has_pending_feedback($user_id)) {
+    $_SESSION['errormsg'] = "Please give feedback on your resolved emergencies before reporting a new one.";
+    header("location:../feedback.php");
+    exit();
+}
 $fullname    = sanitizer($_POST['fullname'] ?? '');
 $phone       = sanitizer($_POST['phone'] ?? '');
 $location    = sanitizer($_POST['location'] ?? '');

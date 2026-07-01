@@ -6,10 +6,20 @@ require_once "./classes/Admin.php";
 $admin = new Admin();
 
 $threshold = filter_input(INPUT_GET, 'threshold', FILTER_VALIDATE_INT) ?: 3;
-$zones  = $admin->hot_zones($threshold);
-$points = $admin->incident_points();
+$zones    = $admin->hot_zones($threshold);
+$points   = $admin->incident_points();
+$priority = $admin->priority_incidents();
 $pendingCount = $admin->count_pending_categories();
 $pageTitle = 'Hot Zones - Eko Response';
+
+$sevBadge = function ($s) {
+    switch (strtolower((string) $s)) {
+        case 'severe':   return 'bg-danger';
+        case 'moderate': return 'bg-warning text-dark';
+        case 'mild':     return 'bg-info text-dark';
+        default:         return 'bg-secondary';
+    }
+};
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -29,6 +39,31 @@ $pageTitle = 'Hot Zones - Eko Response';
                 <a href="hot_zones.php?threshold=<?php echo $threshold + 1; ?>">raise</a> threshold.
             </p>
 
+            <div class="card shadow-sm mb-4 border-danger">
+                <div class="card-header bg-danger text-white"><h5 class="mb-0">🚨 Priority — last 24 hours (by severity)</h5></div>
+                <div class="card-body table-responsive">
+                    <?php if (empty($priority)): ?>
+                        <p class="text-muted mb-0">No emergencies reported in the last 24 hours.</p>
+                    <?php else: ?>
+                        <table class="table table-sm align-middle mb-0">
+                            <thead><tr><th>#</th><th>Severity</th><th>Type</th><th>Area</th><th>Status</th><th>Reported</th></tr></thead>
+                            <tbody>
+                            <?php foreach ($priority as $p): ?>
+                                <tr>
+                                    <td><?php echo (int)$p['alert_id']; ?></td>
+                                    <td><span class="badge <?php echo $sevBadge($p['severity']); ?>"><?php echo htmlspecialchars($p['severity'] ?? 'n/a'); ?></span></td>
+                                    <td><?php echo htmlspecialchars($p['category_name'] ?? 'Emergency'); ?></td>
+                                    <td><?php echo htmlspecialchars(trim(($p['lga_name'] ?? '') . ($p['state_name'] ? ', ' . $p['state_name'] : ''))); ?></td>
+                                    <td><?php echo htmlspecialchars($p['alert_status'] ?? 'pending'); ?></td>
+                                    <td><?php echo htmlspecialchars($p['alert_time'] ?? ''); ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    <?php endif; ?>
+                </div>
+            </div>
+
             <div class="card shadow-sm mb-4">
                 <div class="card-body"><div id="map"></div></div>
             </div>
@@ -37,16 +72,19 @@ $pageTitle = 'Hot Zones - Eko Response';
                 <div class="card-header"><h5 class="mb-0">Hot zones (by LGA)</h5></div>
                 <div class="card-body table-responsive">
                     <table class="table table-striped align-middle">
-                        <thead><tr><th>#</th><th>LGA</th><th>State</th><th>Reports</th><th>Map</th></tr></thead>
+                        <thead><tr><th>#</th><th>LGA</th><th>State</th><th>Total</th><th>Last 24h</th><th>Severe</th><th>Last report</th><th>Map</th></tr></thead>
                         <tbody>
                         <?php if (empty($zones)): ?>
-                            <tr><td colspan="5" class="text-muted text-center py-3">No hot zones at this threshold yet.</td></tr>
+                            <tr><td colspan="8" class="text-muted text-center py-3">No hot zones at this threshold yet.</td></tr>
                         <?php else: $i = 1; foreach ($zones as $z): ?>
                             <tr>
                                 <td><?php echo $i++; ?></td>
                                 <td><?php echo htmlspecialchars($z['lga_name']); ?></td>
                                 <td><?php echo htmlspecialchars($z['state_name'] ?? '—'); ?></td>
                                 <td><span class="badge bg-danger"><?php echo (int)$z['total']; ?></span></td>
+                                <td><?php echo (int)$z['last_24h']; ?></td>
+                                <td><?php echo (int)$z['severe_count']; ?></td>
+                                <td><?php echo htmlspecialchars($z['last_time'] ?? '—'); ?></td>
                                 <td>
                                     <?php if (!empty($z['avg_lat']) && !empty($z['avg_lng'])): ?>
                                         <a target="_blank" rel="noopener"

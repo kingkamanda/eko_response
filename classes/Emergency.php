@@ -41,11 +41,13 @@ class Incident extends Db
             $imageName = $this->saveUpload($incident_img, ['jpg', 'jpeg', 'png', 'gif']);
             $videoName = $this->saveUpload($incident_vid, ['mp4', 'mov', 'avi', 'webm', 'mkv']);
 
+            // $status carries the reporter-supplied severity (severe/moderate/mild).
+            // Store it in `severity`; the workflow status starts at 'pending'.
             $query = "INSERT INTO emergency_alert_table
                         (user_id, user_fullname, user_phone, user_location, emergency_type,
-                         alert_status, alert_time, emergency_alert_image, emergency_alert_video,
+                         severity, alert_status, alert_time, emergency_alert_image, emergency_alert_video,
                          alert_desc, lga_id, latitude, longitude)
-                      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                      VALUES (?, ?, ?, ?, ?, ?, 'pending', ?, ?, ?, ?, ?, ?, ?)";
             $stmt = $this->dbconn->prepare($query);
             $stmt->execute([
                 $user_id, $fullname, $phone, $location, $emergency,
@@ -146,34 +148,157 @@ class Incident extends Db
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    /** Hot zones (LGAs with many reports) for the public hot-zone view. */
+    /**
+     * Hot zones (LGAs with many reports), enriched with recency and severity so
+     * the view can prioritise the last 24h. Zones are ordered so the most
+     * recently and severely affected areas come first.
+     */
     public function hot_zones($threshold = 3, $limit = 20)
     {
         $limit = (int) $limit;
-        $sql = "SELECT l.lga_name, s.state_name, COUNT(e.alert_id) AS total,
+        $sql = "SELECT l.lga_name, s.state_name,
+                       COUNT(e.alert_id) AS total,
+                       SUM(e.alert_time >= (NOW() - INTERVAL 1 DAY)) AS last_24h,
+                       SUM(e.alert_time >= (NOW() - INTERVAL 7 DAY)) AS last_7d,
+                       SUM(LOWER(e.severity) = 'severe') AS severe_count,
+                       MAX(e.alert_time) AS last_time,
                        AVG(e.latitude) AS avg_lat, AVG(e.longitude) AS avg_lng
                 FROM emergency_alert_table e
                 JOIN lga l ON l.lga_id = e.lga_id
                 LEFT JOIN state s ON s.state_id = l.state_id
                 GROUP BY e.lga_id, l.lga_name, s.state_name
                 HAVING total >= ?
-                ORDER BY total DESC
+                ORDER BY last_24h DESC, severe_count DESC, total DESC
                 LIMIT $limit";
         $stmt = $this->dbconn->prepare($sql);
         $stmt->execute([$threshold]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Priority incidents: reported within the last 24 hours, ordered by
+     * severity (severe first) then most recent.
+     */
+    public function priority_incidents($limit = 50)
+    {
+        $limit = (int) $limit;
+        $sql = "SELECT e.*, c.category_name, l.lga_name, s.state_name
+                FROM emergency_alert_table e
+                LEFT JOIN category c ON c.category_id = e.emergency_type
+                LEFT JOIN lga l ON l.lga_id = e.lga_id
+                LEFT JOIN state s ON s.state_id = l.state_id
+                WHERE e.alert_time >= (NOW() - INTERVAL 1 DAY)
+                ORDER BY CASE LOWER(e.severity)
+                             WHEN 'severe' THEN 1 WHEN 'moderate' THEN 2
+                             WHEN 'mild' THEN 3 ELSE 4 END,
+                         e.alert_time DESC
+                LIMIT $limit";
+        return $this->dbconn->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Recent incidents: 1–7 days old (i.e. not in the 24h priority window),
+     * with fuller detail but no elevated priority.
+     */
+    public function recent_incidents($limit = 100)
+    {
+        $limit = (int) $limit;
+        $sql = "SELECT e.*, c.category_name, l.lga_name, s.state_name
+                FROM emergency_alert_table e
+                LEFT JOIN category c ON c.category_id = e.emergency_type
+                LEFT JOIN lga l ON l.lga_id = e.lga_id
+                LEFT JOIN state s ON s.state_id = l.state_id
+                WHERE e.alert_time <  (NOW() - INTERVAL 1 DAY)
+                  AND e.alert_time >= (NOW() - INTERVAL 7 DAY)
+                ORDER BY e.alert_time DESC
+                LIMIT $limit";
+        return $this->dbconn->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     /** Reported points with coordinates, for plotting the hot-zone map. */
     public function incident_points($limit = 500)
     {
         $limit = (int) $limit;
-        $sql = "SELECT e.latitude, e.longitude, c.category_name, e.alert_status
+        $sql = "SELECT e.latitude, e.longitude, c.category_name, e.alert_status, e.severity
                 FROM emergency_alert_table e
                 LEFT JOIN category c ON c.category_id = e.emergency_type
                 WHERE e.latitude IS NOT NULL AND e.longitude IS NOT NULL
                 ORDER BY e.alert_id DESC LIMIT $limit";
         return $this->dbconn->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /* ---------------- Reporter incident detail & timeline ---------------- */
+
+    /** A single incident owned by this user (for the reporter's detail view). */
+    public function get_user_incident($alert_id, $user_id)
+    {
+        $sql = "SELECT e.*, c.category_name, l.lga_name, s.state_name,
+                       st.fullname AS assigned_name
+                FROM emergency_alert_table e
+                LEFT JOIN category c ON c.category_id = e.emergency_type
+                LEFT JOIN lga l ON l.lga_id = e.lga_id
+                LEFT JOIN state s ON s.state_id = l.state_id
+                LEFT JOIN staff st ON st.staff_id = e.assigned_staff_id
+                WHERE e.alert_id = ? AND e.user_id = ?";
+        $stmt = $this->dbconn->prepare($sql);
+        $stmt->execute([$alert_id, $user_id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    /** Tracking timeline for an incident (staff and reporter updates). */
+    public function fetch_responses($alert_id)
+    {
+        $sql = "SELECT r.*, st.fullname AS staff_name, u.user_fullname AS reporter_name
+                FROM emergency_response r
+                LEFT JOIN staff st ON st.staff_id = r.staff_id
+                LEFT JOIN User u ON u.user_id = r.user_id
+                WHERE r.alert_id = ?
+                ORDER BY r.response_id DESC";
+        $stmt = $this->dbconn->prepare($sql);
+        $stmt->execute([$alert_id]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /** A reporter adds an update (optionally with an image) to the timeline. */
+    public function add_reporter_update($alert_id, $user_id, $note, $imageFile = null)
+    {
+        $image = $this->saveUpload($imageFile, ['jpg', 'jpeg', 'png', 'gif']);
+        $stmt = $this->dbconn->prepare(
+            "INSERT INTO emergency_response (alert_id, user_id, note, image)
+             VALUES (?, ?, ?, ?)"
+        );
+        return $stmt->execute([$alert_id, $user_id, $note, $image]);
+    }
+
+    /* ----------------------------- Feedback ------------------------------ */
+
+    /** Resolved incidents this user reported that still have no feedback. */
+    public function pending_feedback($user_id)
+    {
+        $sql = "SELECT e.alert_id, c.category_name, e.user_location, l.lga_name
+                FROM emergency_alert_table e
+                LEFT JOIN category c ON c.category_id = e.emergency_type
+                LEFT JOIN lga l ON l.lga_id = e.lga_id
+                WHERE e.user_id = ? AND LOWER(e.alert_status) = 'resolved'
+                  AND NOT EXISTS (SELECT 1 FROM feedback f
+                                  WHERE f.alert_id = e.alert_id AND f.user_id = e.user_id)
+                ORDER BY e.alert_id DESC";
+        $stmt = $this->dbconn->prepare($sql);
+        $stmt->execute([$user_id]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function has_pending_feedback($user_id)
+    {
+        return count($this->pending_feedback($user_id)) > 0;
+    }
+
+    public function add_feedback($user_id, $alert_id, $rating, $comment)
+    {
+        $stmt = $this->dbconn->prepare(
+            "INSERT INTO feedback (user_id, alert_id, rating, comment) VALUES (?, ?, ?, ?)"
+        );
+        return $stmt->execute([$user_id, $alert_id ?: null, $rating ?: null, $comment]);
     }
 
     /** Reports filed by a single user, newest first. */

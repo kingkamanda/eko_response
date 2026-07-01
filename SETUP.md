@@ -88,6 +88,8 @@ emergencies in locations that already have responders.
 > ```bash
 > mysql -u root -p response < upgrade.sql    # map columns + extra categories
 > mysql -u root -p response < upgrade2.sql   # agencies + emergency-type governance
+> mysql -u root -p response < upgrade3.sql   # agency staff + response tracking
+> mysql -u root -p response < upgrade4.sql   # severity + feedback + richer timeline
 > ```
 >
 > (A fresh import of `Eko Response.sql` already includes everything.)
@@ -154,3 +156,13 @@ Open <http://localhost:8000>.
   (admin → *Hot Zones*) and the public (*Hot Zones* in the menu / dashboard).
 - **Public type requests**: users can propose a new emergency type
   (*Request Type* on the dashboard) that admins approve before it's reportable.
+- **Agency portal** (`/agency/login.php`): agency admins manage staff and the
+  emergency queue, assign responders; responders update status, attach photos,
+  and file reports that build a tracking timeline. Responders can't see team size.
+- **Reporter updates & images**: reporters open an incident (*Open* on the
+  dashboard) to add details/photos to the timeline; incident images are viewable
+  by all parties.
+- **Severity & priority hot zones**: reports capture severity; hot zones list the
+  **last 24 hours by severity** as priority and the **past 7 days** with detail.
+- **Mandatory feedback**: after an emergency is resolved, the reporter must rate
+  it before they can file another report.
