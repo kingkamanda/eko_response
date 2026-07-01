@@ -273,4 +273,67 @@ class Staff extends Db
         $stmt->execute([$agency_id, $threshold]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    /* --------------- Platform staff (managers/employees) ----------------- */
+
+    public static function isPlatform($role)
+    {
+        return in_array($role, ['platform_manager', 'platform_employee'], true);
+    }
+
+    /** Every emergency across all agencies (platform-wide view). */
+    public function fetch_all_emergencies()
+    {
+        $sql = "SELECT e.*, c.category_name, a.agency_name, l.lga_name,
+                       u.user_fullname AS reporter, st.fullname AS assigned_name
+                FROM emergency_alert_table e
+                LEFT JOIN category c ON c.category_id = e.emergency_type
+                LEFT JOIN agency a ON a.agency_id = c.agency_id
+                LEFT JOIN lga l ON l.lga_id = e.lga_id
+                LEFT JOIN User u ON u.user_id = e.user_id
+                LEFT JOIN staff st ON st.staff_id = e.assigned_staff_id
+                ORDER BY e.flagged DESC, e.alert_id DESC";
+        return $this->dbconn->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function platform_stats()
+    {
+        $total    = (int) $this->dbconn->query("SELECT COUNT(*) FROM emergency_alert_table")->fetchColumn();
+        $resolved = (int) $this->dbconn->query("SELECT COUNT(*) FROM emergency_alert_table WHERE alert_status = 'resolved'")->fetchColumn();
+        $flagged  = (int) $this->dbconn->query("SELECT COUNT(*) FROM emergency_alert_table WHERE flagged = 1")->fetchColumn();
+        return ['total' => $total, 'resolved' => $resolved, 'pending' => $total - $resolved, 'flagged' => $flagged];
+    }
+
+    public function flag_incident($alert_id, $reason)
+    {
+        $stmt = $this->dbconn->prepare(
+            "UPDATE emergency_alert_table SET flagged = 1, flag_reason = ? WHERE alert_id = ?"
+        );
+        return $stmt->execute([$reason, $alert_id]);
+    }
+
+    public function unflag_incident($alert_id)
+    {
+        $stmt = $this->dbconn->prepare(
+            "UPDATE emergency_alert_table SET flagged = 0, flag_reason = NULL WHERE alert_id = ?"
+        );
+        return $stmt->execute([$alert_id]);
+    }
+
+    /** Platform-wide hot zones (all agencies). */
+    public function global_hot_zones($threshold = 2, $limit = 20)
+    {
+        $limit = (int) $limit;
+        $sql = "SELECT l.lga_name, s.state_name, COUNT(e.alert_id) AS total,
+                       AVG(e.latitude) AS avg_lat, AVG(e.longitude) AS avg_lng
+                FROM emergency_alert_table e
+                JOIN lga l ON l.lga_id = e.lga_id
+                LEFT JOIN state s ON s.state_id = l.state_id
+                GROUP BY e.lga_id, l.lga_name, s.state_name
+                HAVING total >= ?
+                ORDER BY total DESC LIMIT $limit";
+        $stmt = $this->dbconn->prepare($sql);
+        $stmt->execute([$threshold]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

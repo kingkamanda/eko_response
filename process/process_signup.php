@@ -32,7 +32,9 @@ $check = $user->insert_user($fullname, $email, $password, $state, $lga);
 
 if ($check) {
     $_SESSION['useronline'] = $check;
-    header('location:../user_dashboard.php');
+    // Send new users straight to their profile to complete their details.
+    $_SESSION['feedback'] = 'Welcome! Please complete your profile.';
+    header('location:../update_profile.php?id=' . $check);
     exit();
 }
 

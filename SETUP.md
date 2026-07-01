@@ -90,6 +90,7 @@ emergencies in locations that already have responders.
 > mysql -u root -p response < upgrade2.sql   # agencies + emergency-type governance
 > mysql -u root -p response < upgrade3.sql   # agency staff + response tracking
 > mysql -u root -p response < upgrade4.sql   # severity + feedback + richer timeline
+> mysql -u root -p response < upgrade5.sql   # agency states + flags + incident detail
 > ```
 >
 > (A fresh import of `Eko Response.sql` already includes everything.)
@@ -166,3 +167,11 @@ Open <http://localhost:8000>.
   **last 24 hours by severity** as priority and the **past 7 days** with detail.
 - **Mandatory feedback**: after an emergency is resolved, the reporter must rate
   it before they can file another report.
+- **Admin onboarding**: super-admin onboards agencies (tied to a state) and
+  platform managers/employees; new signups are sent to complete their profile.
+- **Flagging**: super-admin and platform staff can flag unresponded/unresolved
+  incidents for review.
+- **Richer incidents & reports**: reports capture people involved, affected /
+  offender gender, landmark and route; the admin **Reports** page adds gender,
+  hour-of-day and month charts, and the CSV export is per-incident with genders,
+  timing breakdown, location detail and first-response / resolution times.

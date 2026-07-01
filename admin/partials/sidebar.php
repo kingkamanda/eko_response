@@ -17,6 +17,10 @@ $pendingBadge = isset($pendingCount) && $pendingCount > 0
         <span class="material-icons align-middle">warning</span> Manage Emergencies</a>
     <a href="manage_categories.php" class="<?php echo $active === 'categories' ? 'active' : ''; ?>">
         <span class="material-icons align-middle">category</span> Emergency Types<?php echo $pendingBadge; ?></a>
+    <a href="manage_agencies.php" class="<?php echo $active === 'agencies' ? 'active' : ''; ?>">
+        <span class="material-icons align-middle">apartment</span> Agencies</a>
+    <a href="manage_platform_staff.php" class="<?php echo $active === 'platform' ? 'active' : ''; ?>">
+        <span class="material-icons align-middle">badge</span> Platform Staff</a>
     <a href="reports.php" class="<?php echo $active === 'reports' ? 'active' : ''; ?>">
         <span class="material-icons align-middle">bar_chart</span> Reports</a>
     <a href="hot_zones.php" class="<?php echo $active === 'hotzones' ? 'active' : ''; ?>">

@@ -9,8 +9,9 @@ if (!$me) { header("location: logout.php"); exit(); }
 
 $agencyId   = $me['agency_id'];
 $staffRole  = $me['role'];
-$agencyName = $me['agency_name'] ?? 'Agency';
-$zones      = $staffObj->hot_zones($agencyId, 2);
+$isPlatform = Staff::isPlatform($staffRole);
+$agencyName = $isPlatform ? 'Platform' : ($me['agency_name'] ?? 'Agency');
+$zones      = $isPlatform ? $staffObj->global_hot_zones(2) : $staffObj->hot_zones($agencyId, 2);
 $pageTitle  = 'Hot Zones - Eko Response';
 ?>
 <!DOCTYPE html>

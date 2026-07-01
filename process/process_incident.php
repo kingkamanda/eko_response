@@ -38,6 +38,14 @@ $longitude   = filter_input(INPUT_POST, 'longitude', FILTER_VALIDATE_FLOAT);
 $incident_img = $_FILES['imageUpload'] ?? null;
 $incident_vid = $_FILES['videoUpload'] ?? null;
 
+$extra = [
+    'landmark'        => sanitizer($_POST['landmark'] ?? ''),
+    'route'           => sanitizer($_POST['route'] ?? ''),
+    'people_involved' => filter_input(INPUT_POST, 'people_involved', FILTER_VALIDATE_INT) ?: '',
+    'affected_gender' => sanitizer($_POST['affected_gender'] ?? ''),
+    'offender_gender' => sanitizer($_POST['offender_gender'] ?? ''),
+];
+
 if (empty($fullname) || empty($phone) || empty($location) || !$lga || !$emergency || empty($status)) {
     $_SESSION['errormsg'] = "Please fill in all required fields.";
     header("location:../emergency_form.php");
@@ -49,7 +57,8 @@ $loc = $incident->addIncident(
     $user_id, $fullname, $phone, $location, $emergency,
     $status, $time, $incident_img, $incident_vid, $description, $lga,
     $latitude !== false ? $latitude : null,
-    $longitude !== false ? $longitude : null
+    $longitude !== false ? $longitude : null,
+    $extra
 );
 
 if (!$loc) {

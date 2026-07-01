@@ -6,12 +6,23 @@ $active     = $active ?? '';
 $staffRole  = $staffRole ?? ($_SESSION['staffrole'] ?? '');
 $agencyName = $agencyName ?? 'Agency';
 $roleLabel  = ucwords(str_replace('_', ' ', $staffRole));
+$isPlatform = in_array($staffRole, ['platform_manager', 'platform_employee'], true);
 ?>
 <nav class="col-md-2 p-0 sidebar">
     <div class="brand">
         <i class="ri-shield-star-line"></i> Eko Response
         <small><?php echo htmlspecialchars($agencyName); ?> &middot; <?php echo htmlspecialchars($roleLabel); ?></small>
     </div>
+
+    <?php if ($isPlatform): ?>
+        <a href="platform.php" class="<?php echo $active === 'platform' ? 'active' : ''; ?>">
+            <span class="material-icons align-middle">public</span> All Emergencies</a>
+        <a href="hotzones.php" class="<?php echo $active === 'hotzones' ? 'active' : ''; ?>">
+            <span class="material-icons align-middle">local_fire_department</span> Hot Zones</a>
+        <a href="logout.php"><span class="material-icons align-middle">logout</span> Logout</a>
+    </nav>
+    <?php return; endif; ?>
+
     <a href="dashboard.php" class="<?php echo $active === 'dashboard' ? 'active' : ''; ?>">
         <span class="material-icons align-middle">dashboard</span> Dashboard</a>
 

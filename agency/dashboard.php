@@ -7,6 +7,9 @@ $staffObj = new Staff();
 $me = $staffObj->current($_SESSION['staffonline']);
 if (!$me) { header("location: logout.php"); exit(); }
 
+// Platform managers/employees have their own cross-agency view.
+if (Staff::isPlatform($me['role'])) { header("location: platform.php"); exit(); }
+
 $staffRole  = $me['role'];
 $agencyId   = $me['agency_id'];
 $agencyName = $me['agency_name'] ?? 'Agency';

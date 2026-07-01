@@ -50,10 +50,15 @@ the password `staff12345`.** *(Requires `seed_staff.sql`.)*
 | Lagos Fire & Rescue | Responder | `fire.responder@ekoresponse.test` |
 | LASAMBUS (Medical) | Agency admin | `medical.admin@ekoresponse.test` |
 | LASAMBUS (Medical) | Responder | `medical.responder@ekoresponse.test` |
+| Platform (no agency) | Platform manager | `platform.manager@ekoresponse.test` |
+| Platform (no agency) | Platform employee | `platform.employee@ekoresponse.test` |
 
 ## Roles at a glance
 
-- **Super admin** — platform owner (`/admin/`).
+- **Super admin** — platform owner (`/admin/`): onboards agencies (by state),
+  emergency types, platform staff; generates reports; flags incidents.
+- **Platform manager/employee** — cross-agency oversight in the staff portal;
+  reviews and flags unresponded/unresolved incidents.
 - **Agency admin** — manages their agency's staff and emergency queue; assigns
   responders; sees agency hot zones.
 - **Employee** — views the agency queue, assigns responders, updates status.
