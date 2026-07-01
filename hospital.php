@@ -7,7 +7,10 @@ $respondent = new Incident();
 $location = $respondent->get_location($loc);
 $result   = $respondent->find_units('medical', $loc);
 $hospitals = $result['units'];
+$agency   = $respondent->agency_for_service('medical', $loc);
+require_once __DIR__ . '/partials/agency_contact.php';
 ?>
+<?php /* contact card rendered inside the section below */ ?>
 <section class="ftco-section mt-5">
     <div class="container">
         <div class="row justify-content-center">
@@ -27,6 +30,7 @@ $hospitals = $result['units'];
                 <?php endif; ?>
             </div>
         </div>
+        <?php if ($agency) { render_agency_contact($agency); } ?>
         <?php if ($hospitals): ?>
         <div class="row">
             <div class="col-md-12 table-responsive">

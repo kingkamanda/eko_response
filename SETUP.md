@@ -91,6 +91,8 @@ emergencies in locations that already have responders.
 > mysql -u root -p response < upgrade3.sql   # agency staff + response tracking
 > mysql -u root -p response < upgrade4.sql   # severity + feedback + richer timeline
 > mysql -u root -p response < upgrade5.sql   # agency states + flags + incident detail
+> mysql -u root -p response < upgrade6.sql   # support live chat
+> mysql -u root -p response < seed_coverage.sql   # (optional) agencies/units beyond Lagos
 > ```
 >
 > (A fresh import of `Eko Response.sql` already includes everything.)
@@ -175,3 +177,10 @@ Open <http://localhost:8000>.
   offender gender, landmark and route; the admin **Reports** page adds gender,
   hour-of-day and month charts, and the CSV export is per-incident with genders,
   timing breakdown, location detail and first-response / resolution times.
+- **Support live chat**: users chat with support from *Support Chat* on the
+  dashboard; admins reply from *Support* in the admin sidebar. Updates poll in
+  near-real-time.
+- **Nationwide coverage**: reports in any state resolve a responsible-agency
+  contact (an agency onboarded in that state, or a default) shown on the result
+  page alongside any registered units and the 112 line. Run `seed_coverage.sql`
+  for example agencies/units beyond Lagos (incl. Abuja).

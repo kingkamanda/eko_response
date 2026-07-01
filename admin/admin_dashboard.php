@@ -14,6 +14,7 @@ $pending          = $totalEmergencies - $resolved;
 $feedback = $_SESSION['admin_feedback'] ?? null;
 unset($_SESSION['admin_feedback']);
 $pendingCount = $admin1->count_pending_categories();
+$supportUnread = $admin1->support_unread_total();
 
 $sn = 1;
 $pageTitle = 'Admin Dashboard - Eko Response';

@@ -25,6 +25,10 @@ $pendingBadge = isset($pendingCount) && $pendingCount > 0
         <span class="material-icons align-middle">bar_chart</span> Reports</a>
     <a href="hot_zones.php" class="<?php echo $active === 'hotzones' ? 'active' : ''; ?>">
         <span class="material-icons align-middle">local_fire_department</span> Hot Zones</a>
+    <a href="support_inbox.php" class="<?php echo $active === 'support' ? 'active' : ''; ?>">
+        <span class="material-icons align-middle">forum</span> Support<?php
+            echo (isset($supportUnread) && $supportUnread > 0)
+                ? ' <span class="badge bg-danger rounded-pill">' . (int) $supportUnread . '</span>' : ''; ?></a>
     <a href="admin_logout.php">
         <span class="material-icons align-middle">logout</span> Logout</a>
 </nav>

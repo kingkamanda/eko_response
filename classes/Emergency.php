@@ -133,6 +133,86 @@ class Incident extends Db
         return $stmt->fetchColumn() ?: null;
     }
 
+    /**
+     * Resolve the agency that should handle a report, covering every state:
+     * prefer an agency of the right service type located in the incident's own
+     * state; otherwise fall back to the category's default agency. Returns the
+     * agency row (with state_name) or null.
+     */
+    public function responsible_agency($category_id, $lga_id)
+    {
+        // Service type + default agency for this category.
+        $stmt = $this->dbconn->prepare(
+            "SELECT a.agency_id, a.agency_type FROM category c
+             LEFT JOIN agency a ON a.agency_id = c.agency_id WHERE c.category_id = ?"
+        );
+        $stmt->execute([$category_id]);
+        $cat = $stmt->fetch(PDO::FETCH_ASSOC);
+        if (!$cat) {
+            return null;
+        }
+
+        // The incident's state (via its LGA).
+        $s = $this->dbconn->prepare("SELECT state_id FROM lga WHERE lga_id = ?");
+        $s->execute([$lga_id]);
+        $stateId = $s->fetchColumn();
+
+        // Prefer an agency of the same service type in the incident's state.
+        if ($stateId && !empty($cat['agency_type'])) {
+            $q = $this->dbconn->prepare(
+                "SELECT a.*, st.state_name FROM agency a
+                 LEFT JOIN state st ON st.state_id = a.state_id
+                 WHERE a.agency_type = ? AND a.state_id = ? LIMIT 1"
+            );
+            $q->execute([$cat['agency_type'], $stateId]);
+            if ($row = $q->fetch(PDO::FETCH_ASSOC)) {
+                return $row;
+            }
+        }
+
+        // Fall back to the category's default agency.
+        if (!empty($cat['agency_id'])) {
+            $q = $this->dbconn->prepare(
+                "SELECT a.*, st.state_name FROM agency a
+                 LEFT JOIN state st ON st.state_id = a.state_id WHERE a.agency_id = ?"
+            );
+            $q->execute([$cat['agency_id']]);
+            return $q->fetch(PDO::FETCH_ASSOC) ?: null;
+        }
+        return null;
+    }
+
+    /**
+     * The contact agency for a service type near a location: an agency of that
+     * type in the location's state if one is onboarded, otherwise any agency of
+     * that type (default). Lets every state show a responsible contact.
+     */
+    public function agency_for_service($type, $lga_id)
+    {
+        $s = $this->dbconn->prepare("SELECT state_id FROM lga WHERE lga_id = ?");
+        $s->execute([$lga_id]);
+        $stateId = $s->fetchColumn();
+
+        if ($stateId) {
+            $q = $this->dbconn->prepare(
+                "SELECT a.*, st.state_name FROM agency a
+                 LEFT JOIN state st ON st.state_id = a.state_id
+                 WHERE a.agency_type = ? AND a.state_id = ? LIMIT 1"
+            );
+            $q->execute([$type, $stateId]);
+            if ($row = $q->fetch(PDO::FETCH_ASSOC)) {
+                return $row;
+            }
+        }
+        $q = $this->dbconn->prepare(
+            "SELECT a.*, st.state_name FROM agency a
+             LEFT JOIN state st ON st.state_id = a.state_id
+             WHERE a.agency_type = ? ORDER BY a.agency_id LIMIT 1"
+        );
+        $q->execute([$type]);
+        return $q->fetch(PDO::FETCH_ASSOC) ?: null;
+    }
+
     /** A logged-in user proposes a new emergency type for admin approval. */
     public function request_category($name, $agency_id, $user_id)
     {

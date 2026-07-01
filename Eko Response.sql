@@ -1593,3 +1593,19 @@ ALTER TABLE `emergency_alert_table`
   ADD COLUMN `people_involved` int(11)     DEFAULT NULL,
   ADD COLUMN `affected_gender` varchar(20) DEFAULT NULL,
   ADD COLUMN `offender_gender` varchar(20) DEFAULT NULL;
+
+-- ---------------------------------------------------------------------------
+-- Phase 5 additions: support live chat
+-- ---------------------------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS `support_message` (
+  `message_id` int(11)       NOT NULL AUTO_INCREMENT,
+  `user_id`    int(11)       NOT NULL,
+  `sender`     varchar(20)   NOT NULL DEFAULT 'user',
+  `staff_id`   int(11)       DEFAULT NULL,
+  `body`       varchar(1000) NOT NULL,
+  `is_read`    tinyint(1)    NOT NULL DEFAULT 0,
+  `created_at` timestamp     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`message_id`),
+  KEY `support_user_idx` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

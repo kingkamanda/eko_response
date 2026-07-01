@@ -7,6 +7,8 @@ $respondent = new Incident();
 $location = $respondent->get_location($loc);
 $result   = $respondent->find_units('fire', $loc);
 $stations = $result['units'];
+$agency   = $respondent->agency_for_service('fire', $loc);
+require_once __DIR__ . '/partials/agency_contact.php';
 ?>
 <section class="ftco-section mt-5">
     <div class="container">
@@ -27,6 +29,7 @@ $stations = $result['units'];
                 <?php endif; ?>
             </div>
         </div>
+        <?php if ($agency) { render_agency_contact($agency); } ?>
         <?php if ($stations): ?>
         <div class="row">
             <div class="col-md-12 table-responsive">

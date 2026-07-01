@@ -430,4 +430,57 @@ class Admin extends Db
                 ORDER BY e.alert_id DESC";
         return $this->dbconnect->query($sql)->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    /* --------------------------- Support chat ---------------------------- */
+
+    /** One entry per user who has messaged support, newest activity first. */
+    public function support_conversations()
+    {
+        $sql = "SELECT m.user_id, u.user_fullname, u.user_email,
+                       MAX(m.created_at) AS last_time,
+                       SUM(CASE WHEN m.sender = 'user' AND m.is_read = 0 THEN 1 ELSE 0 END) AS unread,
+                       SUBSTRING_INDEX(GROUP_CONCAT(m.body ORDER BY m.message_id DESC SEPARATOR '\\n'), '\\n', 1) AS last_message
+                FROM support_message m
+                LEFT JOIN User u ON u.user_id = m.user_id
+                GROUP BY m.user_id, u.user_fullname, u.user_email
+                ORDER BY last_time DESC";
+        return $this->dbconnect->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /** Messages for one conversation newer than $since; marks user msgs read. */
+    public function support_fetch($user_id, $since = 0)
+    {
+        $stmt = $this->dbconnect->prepare(
+            "SELECT message_id, sender, body, created_at
+             FROM support_message WHERE user_id = ? AND message_id > ?
+             ORDER BY message_id ASC"
+        );
+        $stmt->execute([$user_id, (int) $since]);
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $this->dbconnect->prepare(
+            "UPDATE support_message SET is_read = 1 WHERE user_id = ? AND sender = 'user'"
+        )->execute([$user_id]);
+        return $rows;
+    }
+
+    public function support_reply($user_id, $staff_id, $body)
+    {
+        $body = trim($body);
+        if ($body === '') {
+            return 0;
+        }
+        $stmt = $this->dbconnect->prepare(
+            "INSERT INTO support_message (user_id, sender, staff_id, body, is_read)
+             VALUES (?, 'support', ?, ?, 1)"
+        );
+        $stmt->execute([$user_id, $staff_id, mb_substr($body, 0, 1000)]);
+        return (int) $this->dbconnect->lastInsertId();
+    }
+
+    public function support_unread_total()
+    {
+        return (int) $this->dbconnect
+            ->query("SELECT COUNT(*) FROM support_message WHERE sender = 'user' AND is_read = 0")
+            ->fetchColumn();
+    }
 }
