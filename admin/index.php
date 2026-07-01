@@ -117,7 +117,7 @@
     </body>
     <!-- Footer -->
     <?php
-        require_once"../partials/footer.php"
+       // require_once"../partials/footer.php"
     ?>
 
     <script src="assets/jquery-3.7.1.js"></script>

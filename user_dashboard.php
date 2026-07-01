@@ -111,9 +111,11 @@ $sevBadge = function ($s) {
 
             <div class="top">
               <div class="logo">
-                <a href="index.php" class="navbar-brand nav__logo">
-                  <i class="ri-fire-line"></i>Eko Response
-                </a>
+                
+                <a href="index.php" class="navbar-brand nav__logo">                                   
+                <a class="navbar-brand d-flex align-items-center gap-2" href="index.php">
+                <i class="fa-solid fa-truck-medical"></i> Eko Response
+            </a>
               </div>
               <div class="close" id="close_btn">
                 <span class="material-symbols-sharp">
