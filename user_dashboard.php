@@ -155,46 +155,51 @@ $badgeClass = function ($status) {
           <!--===============DASHBOARD SIDE BAR END=================-->
           <div class="col-sm-10 ">
             <!-- <div> -->
-            <h3><span>DASHBOARD</span></h3>
-            <h3>Welcome, <?php echo $firstname ?>!</h3>
-            <p>What you have been up to?</p>
-
-            <!-- </div> -->
-            <!-- <div class="container px-1 "> -->
+            <!-- Welcome + quick actions -->
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+              <div>
+                <h3 class="mb-0">Welcome, <?php echo htmlspecialchars($firstname) ?>!</h3>
+                <p class="text-muted mb-0">Here's an overview of your emergency reports.</p>
+              </div>
+              <div class="d-flex flex-wrap gap-2">
+                <a href="emergency_form.php" class="btn btn-danger"><i class="fa-solid fa-triangle-exclamation me-1"></i> Report Emergency</a>
+                <a href="hotzones.php" class="btn btn-outline-dark"><i class="fa-solid fa-fire me-1"></i> Hot Zones</a>
+                <a href="request_emergency_type.php" class="btn btn-outline-dark"><i class="fa-solid fa-lightbulb me-1"></i> Request Type</a>
+              </div>
+            </div>
 
             <!--===============DASHBOARD CARD BEGINNING=================-->
-            <!-- <div class="row gx-1 gy-1 "> -->
             <div class="row g-3">
-              <div class="col-md-4 ">
-                <div class="card">
-                  <div class="card-header">
-                    <h5>My Reports</h5>
-                  </div>
-                  <div class="card-body">
-                    <h5 class="card-title"><?php echo $totalReports; ?></h5>
-                    <p class="card-text">Total emergencies you have reported</p>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-4 ">
-                <div class="card">
-                  <div class="card-header">
-                    <h5>Resolved</h5>
-                  </div>
-                  <div class="card-body">
-                    <h5 class="card-title"><?php echo $resolvedCount; ?></h5>
-                    <p class="card-text">Reports marked resolved</p>
+              <div class="col-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                  <div class="card-body d-flex align-items-center">
+                    <span class="me-3 fs-2 text-primary"><i class="fa-solid fa-clipboard-list"></i></span>
+                    <div>
+                      <div class="h3 mb-0 fw-bold"><?php echo $totalReports; ?></div>
+                      <div class="text-muted small">My Reports</div>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div class="col-md-4 ">
-                <div class="card">
-                  <div class="card-header">
-                    <h5>Pending</h5>
+              <div class="col-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                  <div class="card-body d-flex align-items-center">
+                    <span class="me-3 fs-2 text-success"><i class="fa-solid fa-circle-check"></i></span>
+                    <div>
+                      <div class="h3 mb-0 fw-bold"><?php echo $resolvedCount; ?></div>
+                      <div class="text-muted small">Resolved</div>
+                    </div>
                   </div>
-                  <div class="card-body">
-                    <h5 class="card-title"><?php echo $pendingCount; ?></h5>
-                    <p class="card-text">Reports awaiting response</p>
+                </div>
+              </div>
+              <div class="col-12 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                  <div class="card-body d-flex align-items-center">
+                    <span class="me-3 fs-2 text-warning"><i class="fa-solid fa-hourglass-half"></i></span>
+                    <div>
+                      <div class="h3 mb-0 fw-bold"><?php echo $pendingCount; ?></div>
+                      <div class="text-muted small">Pending</div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -203,12 +208,10 @@ $badgeClass = function ($status) {
 
 
             <!-- <div class="col mt-1">-->
-            <div class="row g-3 mt-3">
-              <!-- <div class="row gx-1" style="min-height: 570px;"> -->
-              <div class="col-md-9 ">
-                <!-- <div class="p-3 dashboard-cards shadow-lg p-3" style="min-height: 560px;"> -->
-                <div class="card">
-                  <div class="card-header d-flex justify-content-between align-items-center">
+            <div class="row g-3 mt-1">
+              <div class="col-lg-8">
+                <div class="card border-0 shadow-sm h-100">
+                  <div class="card-header bg-white d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">My Reported Emergencies</h5>
                     <a href="emergency_form.php" class="btn btn-sm btn-danger">+ Report Emergency</a>
                   </div>
@@ -258,14 +261,11 @@ $badgeClass = function ($status) {
               </div>
 
 
-              <!----------------------------------- NOTIFICATION PANE START---------------------->
-              <!-- <div class="col-sm-3 dashboard-cards shadow-lg "> -->
-              <div class="col-md-3">
-                <!-- <div class=" " style="min-height: 540px;">
-        <div class="mt-4 mb-5 mx-3"> -->
-                <div class="card">
-                  <div class="card-header">
-                    <h5>Recent Activity <span class="badge bg-danger rounded-pill"><?php echo $totalReports; ?></span></h5>
+              <!----------------------------------- ACTIVITY PANE START---------------------->
+              <div class="col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                  <div class="card-header bg-white">
+                    <h5 class="mb-0">Recent Activity <span class="badge bg-danger rounded-pill"><?php echo $totalReports; ?></span></h5>
                   </div>
                   <div class="card-body">
                     <?php if (empty($myIncidents)): ?>

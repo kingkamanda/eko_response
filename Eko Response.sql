@@ -1520,3 +1520,35 @@ ALTER TABLE `category`
 UPDATE `category` SET `agency_id` = 1 WHERE `category_id` IN (4, 11, 12, 15);
 UPDATE `category` SET `agency_id` = 2 WHERE `category_id` IN (2, 7, 8, 10);
 UPDATE `category` SET `agency_id` = 3 WHERE `category_id` IN (1, 3, 6, 9, 13, 14);
+
+-- ---------------------------------------------------------------------------
+-- Phase 2 additions: agency staff, assignment & response tracking
+-- ---------------------------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS `staff` (
+  `staff_id`   int(11)      NOT NULL AUTO_INCREMENT,
+  `fullname`   varchar(150) NOT NULL,
+  `email`      varchar(150) NOT NULL,
+  `password`   varchar(255) NOT NULL,
+  `role`       varchar(30)  NOT NULL DEFAULT 'employee',
+  `agency_id`  int(11)      DEFAULT NULL,
+  `phone`      varchar(50)  DEFAULT NULL,
+  `status`     varchar(20)  NOT NULL DEFAULT 'active',
+  `created_at` timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`staff_id`),
+  UNIQUE KEY `staff_email_unique` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+ALTER TABLE `emergency_alert_table`
+  ADD COLUMN `assigned_staff_id` int(11) DEFAULT NULL;
+
+CREATE TABLE IF NOT EXISTS `emergency_response` (
+  `response_id` int(11)      NOT NULL AUTO_INCREMENT,
+  `alert_id`    int(11)      NOT NULL,
+  `staff_id`    int(11)      DEFAULT NULL,
+  `status`      varchar(50)  DEFAULT NULL,
+  `note`        varchar(500) DEFAULT NULL,
+  `created_at`  timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`response_id`),
+  KEY `resp_alert_idx` (`alert_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

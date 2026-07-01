@@ -1,0 +1,35 @@
+<?php
+/**
+ * Role-aware agency sidebar. Expects $active, $staffRole, $agencyName.
+ */
+$active     = $active ?? '';
+$staffRole  = $staffRole ?? ($_SESSION['staffrole'] ?? '');
+$agencyName = $agencyName ?? 'Agency';
+$roleLabel  = ucwords(str_replace('_', ' ', $staffRole));
+?>
+<nav class="col-md-2 p-0 sidebar">
+    <div class="brand">
+        <i class="ri-shield-star-line"></i> Eko Response
+        <small><?php echo htmlspecialchars($agencyName); ?> &middot; <?php echo htmlspecialchars($roleLabel); ?></small>
+    </div>
+    <a href="dashboard.php" class="<?php echo $active === 'dashboard' ? 'active' : ''; ?>">
+        <span class="material-icons align-middle">dashboard</span> Dashboard</a>
+
+    <?php if ($staffRole === 'responder'): ?>
+        <a href="dashboard.php" class="<?php echo $active === 'assigned' ? 'active' : ''; ?>">
+            <span class="material-icons align-middle">assignment_ind</span> My Assignments</a>
+    <?php else: ?>
+        <a href="emergencies.php" class="<?php echo $active === 'emergencies' ? 'active' : ''; ?>">
+            <span class="material-icons align-middle">warning</span> Emergencies</a>
+    <?php endif; ?>
+
+    <?php if ($staffRole === 'agency_admin'): ?>
+        <a href="staff.php" class="<?php echo $active === 'staff' ? 'active' : ''; ?>">
+            <span class="material-icons align-middle">groups</span> Staff</a>
+    <?php endif; ?>
+
+    <a href="hotzones.php" class="<?php echo $active === 'hotzones' ? 'active' : ''; ?>">
+        <span class="material-icons align-middle">local_fire_department</span> Hot Zones</a>
+    <a href="logout.php">
+        <span class="material-icons align-middle">logout</span> Logout</a>
+</nav>
