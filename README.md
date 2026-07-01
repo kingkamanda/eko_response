@@ -30,13 +30,34 @@ Administrators manage users and emergencies from a dedicated dashboard.
 ├── assets/ , static/      CSS, JS, images, Bootstrap
 ├── uploads/               User profile pictures
 ├── incident_media/        Uploaded incident photos/videos
+├── admin/                 Super-admin area (users, types, reports, hot zones)
+├── agency/                Agency staff portal (admins, employees, responders)
 ├── Eko Response.sql       Database schema + seed data
-├── seed_demo.sql          Optional demo account + sample emergencies
+├── seed_demo.sql          Optional demo public user + sample emergencies
+├── seed_staff.sql         Optional demo agency staff accounts
 ├── upgrade.sql            Schema upgrade: map columns + extra categories
 ├── upgrade2.sql           Schema upgrade: agencies + emergency-type governance
+├── upgrade3.sql           Schema upgrade: agency staff + response tracking
 ├── SETUP.md               Detailed step-by-step setup guide
+├── SEED_ACCOUNTS.md       All seeded logins + how work flows between roles
 └── Eko Response ERD.png   Entity-relationship diagram
 ```
+
+## Roles & portals
+
+| Portal | Who | Where |
+|--------|-----|-------|
+| Public site | Anyone / registered users | `/` |
+| Super admin | Platform owner | `/admin/` |
+| Agency portal | Agency admins, employees, responders | `/agency/login.php` |
+
+Public users report emergencies (pinning the location on a map) and can request
+new emergency types. Each type has a **responsible agency**; new reports flow to
+that agency's queue, where an **agency admin/employee** assigns a **responder**,
+who updates status and files response reports that build a tracking timeline.
+Repeatedly affected areas surface automatically as **hot zones**.
+
+See **[SEED_ACCOUNTS.md](SEED_ACCOUNTS.md)** for every seeded login.
 
 > New here or hitting a database error? Follow **[SETUP.md](SETUP.md)** for a
 > detailed, OS-specific walkthrough.

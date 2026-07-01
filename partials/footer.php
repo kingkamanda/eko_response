@@ -23,9 +23,9 @@ ul{
                         <div class="col-md-3">
                             <h5 class="font-weight-bold text-light">Quick Links</h5>
                             <ul class="list-unstyled">
-                                <li><a href="#" style="text-decoration: none;" class="text-light">FAQ</a></li>
-                                <li><a href="#" style="text-decoration: none;" class="text-light">Become a partner</a></li>
-                                <li><a href="#" style="text-decoration: none;" class="text-light">Careers</a></li>
+                                <li><a href="hotzones.php" style="text-decoration: none;" class="text-light">Hot Zones</a></li>
+                                <li><a href="agency/login.php" style="text-decoration: none;" class="text-light">Agency Portal</a></li>
+                                <li><a href="admin/" style="text-decoration: none;" class="text-light">Admin</a></li>
                                 <li><a href="contact.php" style="text-decoration: none;" class="text-light">Contact Us</a></li>
                             </ul>
                         </div>
