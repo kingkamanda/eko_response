@@ -48,8 +48,9 @@ class Incident extends Db
                         (user_id, user_fullname, user_phone, user_location, emergency_type,
                          severity, alert_status, alert_time, emergency_alert_image, emergency_alert_video,
                          alert_desc, lga_id, latitude, longitude,
-                         landmark, route, people_involved, affected_gender, offender_gender)
-                      VALUES (?, ?, ?, ?, ?, ?, 'pending', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                         landmark, route, people_involved, affected_gender, offender_gender,
+                         casualties, weapon)
+                      VALUES (?, ?, ?, ?, ?, ?, 'pending', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = $this->dbconn->prepare($query);
             $stmt->execute([
                 $user_id, $fullname, $phone, $location, $emergency,
@@ -60,10 +61,13 @@ class Incident extends Db
                 $extra['route'] ?? null,
                 isset($extra['people_involved']) && $extra['people_involved'] !== '' ? (int) $extra['people_involved'] : null,
                 $extra['affected_gender'] ?? null,
-                $extra['offender_gender'] ?? null
+                $extra['offender_gender'] ?? null,
+                !empty($extra['casualties']) ? 1 : 0,
+                !empty($extra['weapon']) ? 1 : 0
             ]);
 
-            return $this->dbconn->lastInsertId() ? (int) $lga : 0;
+            // Return the new incident id so the caller can open its dispatch page.
+            return (int) $this->dbconn->lastInsertId();
         } catch (Exception $e) {
             error_log("addIncident failed: " . $e->getMessage());
             $_SESSION['errormsg'] = "We could not submit your report. Please try again.";
@@ -221,6 +225,50 @@ class Incident extends Db
              VALUES (?, ?, 'pending', ?)"
         );
         return $stmt->execute([$name, $agency_id ?: null, $user_id]);
+    }
+
+    /**
+     * Full incident row for the dispatch page, including the category's base
+     * service (agency type), location and the follow-up flags.
+     */
+    public function get_incident($alert_id)
+    {
+        $sql = "SELECT e.*, c.category_name, a.agency_type AS base_service,
+                       l.lga_name, s.state_name
+                FROM emergency_alert_table e
+                LEFT JOIN category c ON c.category_id = e.emergency_type
+                LEFT JOIN agency a ON a.agency_id = c.agency_id
+                LEFT JOIN lga l ON l.lga_id = e.lga_id
+                LEFT JOIN state s ON s.state_id = l.state_id
+                WHERE e.alert_id = ?";
+        $stmt = $this->dbconn->prepare($sql);
+        $stmt->execute([$alert_id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Which responders an incident should reach. Starts with the category's
+     * responsible service, then escalates: a weapon pulls in Police and Medical;
+     * casualties/injuries pull in Medical/Ambulance. Returns an ordered,
+     * de-duplicated list of service keys (police|fire|medical|other).
+     */
+    public function responder_services($base_service, $casualties = false, $weapon = false)
+    {
+        $services = [];
+        if ($base_service) {
+            $services[] = $base_service;
+        }
+        if ($weapon) {
+            $services[] = 'police';
+            $services[] = 'medical';
+        }
+        if ($casualties) {
+            $services[] = 'medical';
+        }
+        if (!$services) {
+            $services[] = 'medical';
+        }
+        return array_values(array_unique($services));
     }
 
     /** The emergency-type requests a user has submitted, with their status. */

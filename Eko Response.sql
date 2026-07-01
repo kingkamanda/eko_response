@@ -1609,3 +1609,13 @@ CREATE TABLE IF NOT EXISTS `support_message` (
   PRIMARY KEY (`message_id`),
   KEY `support_user_idx` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ---------------------------------------------------------------------------
+-- Phase 6 additions: multi-responder dispatch flags
+-- ---------------------------------------------------------------------------
+
+ALTER TABLE `emergency_alert_table`
+  ADD COLUMN `casualties` tinyint(1) NOT NULL DEFAULT 0,
+  ADD COLUMN `weapon`     tinyint(1) NOT NULL DEFAULT 0;
+
+UPDATE `category` SET `agency_id` = 4 WHERE `category_id` IN (3, 9);

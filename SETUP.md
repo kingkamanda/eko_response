@@ -92,6 +92,7 @@ emergencies in locations that already have responders.
 > mysql -u root -p response < upgrade4.sql   # severity + feedback + richer timeline
 > mysql -u root -p response < upgrade5.sql   # agency states + flags + incident detail
 > mysql -u root -p response < upgrade6.sql   # support live chat
+> mysql -u root -p response < upgrade7.sql   # multi-responder dispatch flags
 > mysql -u root -p response < seed_coverage.sql   # (optional) agencies/units beyond Lagos
 > ```
 >
@@ -184,3 +185,9 @@ Open <http://localhost:8000>.
   contact (an agency onboarded in that state, or a default) shown on the result
   page alongside any registered units and the 112 line. Run `seed_coverage.sql`
   for example agencies/units beyond Lagos (incl. Abuja).
+- **Multi-responder dispatch**: after reporting, a dispatch page shows every
+  responder the incident needs. Reports escalate automatically — a weapon adds
+  Police, injuries/casualties add Medical/Ambulance, and accidents route to Road
+  Safety with an ambulance when there are casualties.
+- **Revamped public site**: modern navbar, hero, homepage sections and footer,
+  plus a functional emergency page with a practice drill.

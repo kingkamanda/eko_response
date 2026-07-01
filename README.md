@@ -41,6 +41,7 @@ Administrators manage users and emergencies from a dedicated dashboard.
 ├── upgrade4.sql           Schema upgrade: severity + feedback + timeline
 ├── upgrade5.sql           Schema upgrade: agency states + flags + incident detail
 ├── upgrade6.sql           Schema upgrade: support live chat
+├── upgrade7.sql           Schema upgrade: multi-responder dispatch flags
 ├── seed_coverage.sql      Optional agencies + units beyond Lagos (incl. Abuja)
 ├── SETUP.md               Detailed step-by-step setup guide
 ├── SEED_ACCOUNTS.md       All seeded logins + how work flows between roles

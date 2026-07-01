@@ -44,6 +44,8 @@ $extra = [
     'people_involved' => filter_input(INPUT_POST, 'people_involved', FILTER_VALIDATE_INT) ?: '',
     'affected_gender' => sanitizer($_POST['affected_gender'] ?? ''),
     'offender_gender' => sanitizer($_POST['offender_gender'] ?? ''),
+    'casualties'      => !empty($_POST['casualties']) ? 1 : 0,
+    'weapon'          => !empty($_POST['weapon']) ? 1 : 0,
 ];
 
 if (empty($fullname) || empty($phone) || empty($location) || !$lga || !$emergency || empty($status)) {
@@ -53,7 +55,7 @@ if (empty($fullname) || empty($phone) || empty($location) || !$lga || !$emergenc
 }
 
 $incident = new Incident();
-$loc = $incident->addIncident(
+$alert_id = $incident->addIncident(
     $user_id, $fullname, $phone, $location, $emergency,
     $status, $time, $incident_img, $incident_vid, $description, $lga,
     $latitude !== false ? $latitude : null,
@@ -61,24 +63,12 @@ $loc = $incident->addIncident(
     $extra
 );
 
-if (!$loc) {
+if (!$alert_id) {
     header("location:../emergency_form.php");
     exit();
 }
 
-// Route to the response service defined for this emergency type's responsible
-// agency (set by the admin), falling back to medical units.
-switch ($incident->category_service($emergency)) {
-    case 'fire':
-        $page = "fire.php";
-        break;
-    case 'police':
-        $page = "police.php";
-        break;
-    default: // medical, other, or unset
-        $page = "hospital.php";
-        break;
-}
-
-header("location:../$page?loc=$loc");
+// Show the dispatch page, which routes to every responder the incident needs
+// (e.g. police + medical for a gunshot, road safety + ambulance for casualties).
+header("location:../dispatch.php?id=$alert_id");
 exit();

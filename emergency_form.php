@@ -157,6 +157,18 @@ unset($_SESSION['errormsg']);
                             </select>
                         </div>
                     </div>
+                    <div class="mt-3 p-3 rounded" style="background:#fff3f3;border:1px solid #f5c2c7;">
+                        <div class="fw-semibold mb-2">Anyone hurt or a weapon involved?</div>
+                        <p class="small text-muted mb-2">These help us dispatch the right responders — an ambulance for injuries, and police for weapons.</p>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="1" id="casualties" name="casualties">
+                            <label class="form-check-label" for="casualties">There are injuries or casualties (send medical/ambulance)</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="1" id="weapon" name="weapon">
+                            <label class="form-check-label" for="weapon">A weapon is/was involved (alert police)</label>
+                        </div>
+                    </div>
                     <div class="form-group mt-3">
                         <label for="description">Description</label>
                         <textarea class="form-control" id="description" rows="3" name="desc"></textarea>
