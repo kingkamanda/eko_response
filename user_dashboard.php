@@ -144,6 +144,8 @@ $badgeClass = function ($status) {
               <div class="sidebar col-sm-2 dashboard-cards shadow-lg p-3 mt-1">  -->
                 <a class="list-group-item list-group-item-action active" href="user_dashboard.php"><i class="fas fa-th-large"></i><span class="px-2">Dashboard</span></a>
                 <a class="list-group-item list-group-item-action" href="emergency_form.php"><i class="fa-solid fa-triangle-exclamation"></i><span class="px-2">Report Emergency</span></a>
+                <a class="list-group-item list-group-item-action" href="hotzones.php"><i class="fa-solid fa-fire"></i><span class="px-2">Hot Zones</span></a>
+                <a class="list-group-item list-group-item-action" href="request_emergency_type.php"><i class="fa-solid fa-lightbulb"></i><span class="px-2">Request Type</span></a>
                 <a class="list-group-item list-group-item-action" href="update_profile.php?id=<?php echo $userdata['user_id']; ?>"><i class="fa-solid fa-user"></i><span class="px-2">Update Profile</span></a>
                 <a class="list-group-item list-group-item-action" href="index.php"><i class="fa-solid fa-house"></i><span class="px-2">Home</span></a>
                 <a class="list-group-item list-group-item-action" href="logout.php"><i class="fa-solid fa-arrow-right-from-bracket"></i><span class="px-2">Logout</span></a>

@@ -81,9 +81,16 @@ mysql -u root -p response < seed_demo.sql
 Gives you a ready login (`demo@ekoresponse.test` / `demo12345`) and a few sample
 emergencies in locations that already have responders.
 
-> Already have an older database with real data you don't want to lose? Run
-> `mysql -u root -p response < upgrade.sql` instead — it adds the map columns
-> and the new emergency categories without touching your existing rows.
+> Already have an older database with real data you don't want to lose? Run the
+> upgrades instead of dropping — they add new columns/data without touching your
+> existing rows:
+>
+> ```bash
+> mysql -u root -p response < upgrade.sql    # map columns + extra categories
+> mysql -u root -p response < upgrade2.sql   # agencies + emergency-type governance
+> ```
+>
+> (A fresh import of `Eko Response.sql` already includes everything.)
 
 ---
 
@@ -138,3 +145,12 @@ Open <http://localhost:8000>.
   (OpenStreetMap/Leaflet — no API key required) plus a "Use my current location"
   button. The coordinates are saved with the report and shown as a "View on map"
   link on the user and admin dashboards.
+- **Agencies & governed emergency types** (admin → *Emergency Types*): add/edit
+  emergency types and set the responsible agency (e.g. Robbery → Police). Reports
+  route to that agency's service automatically.
+- **Reports** (admin → *Reports*): charts by type/agency/status/location with CSV
+  export.
+- **Hot zones**: auto-flagged areas by report density, on a map — for admins
+  (admin → *Hot Zones*) and the public (*Hot Zones* in the menu / dashboard).
+- **Public type requests**: users can propose a new emergency type
+  (*Request Type* on the dashboard) that admins approve before it's reportable.
