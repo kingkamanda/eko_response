@@ -1,17 +1,4 @@
-<?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
-$loggedIn = !empty($_SESSION['useronline'])
-    || !empty($_SESSION['user_id'])
-    || !empty($_SESSION['logged_in'])
-    || !empty($_SESSION['loggedin'])
-    || !empty($_SESSION['is_logged_in'])
-    || !empty($_SESSION['user'])
-    || !empty($_SESSION['email'])
-    || !empty($_SESSION['user_email']);
-?>
+<?php require_once __DIR__ . '/auth.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -19,23 +6,16 @@ $loggedIn = !empty($_SESSION['useronline'])
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- ======REMIX ICON======== -->
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
-     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-  
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-
-    <link rel="stylesheet" type="text/css" href="assets/static/bootstrap/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <!--============== CSS================ -->
     <link rel="stylesheet" href="assets/static/css/nav.css">
-     <link rel="stylesheet" href="assets/static/css/styles.css">
-    <link rel="stylesheet" type="text/css" href="assets/static/fontawesome/css/all.min.css">
-    
-    <title>Welcome to Eko Response - Sign up</title>
+    <link rel="stylesheet" href="assets/static/css/styles.css">
+    <link rel="stylesheet" href="assets/static/css/app.css">
+
+    <title>Eko Response - Emergency Response for Lagos</title>
 </head>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
@@ -81,18 +61,19 @@ $loggedIn = !empty($_SESSION['useronline'])
                     <li><a href="emergency.php" class="nav__link">REPORT EMERGENCY</a></li>
                     <li><a href="hotzones.php" class="nav__link">HOT ZONES</a></li>
                     <li><a href="contact.php" class="nav__link">CONTACT US</a></li>
+                    <?php if ($loggedIn): ?>
+                        <li><a href="user_dashboard.php" class="nav__link">DASHBOARD</a></li>
+                    <?php endif; ?>
                 </ul>
             </div>
 
-           <div>
-             
-           </div>
            <div class="d-flex align-items-center justify-content-end modal-btn gap-2">
                 <?php if ($loggedIn): ?>
-                    <a href="user_dashboard.php" class="btn btn-primary">Return to Dashboard</a>
+                    <a href="user_dashboard.php" class="btn btn-brand">Return to Dashboard</a>
+                    <a href="logout.php" class="btn btn-outline-secondary">Logout</a>
                 <?php else: ?>
-                    <a href="login_signup.php" class="btn btn-outline-primary">Login</a>
-                    <a href="login_signup.php?form=signup" class="btn btn-primary">Register</a>
+                    <a href="login_signup.php" class="btn btn-outline-secondary">Login</a>
+                    <a href="login_signup.php?form=signup" class="btn btn-brand">Register</a>
                 <?php endif; ?>
            </div>
         </nav>

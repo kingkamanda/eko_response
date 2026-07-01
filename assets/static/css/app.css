@@ -1,0 +1,63 @@
+/* ==========================================================================
+   Eko Response - shared design system
+   Lightweight tokens + components layered on top of Bootstrap 5.
+   ========================================================================== */
+
+:root {
+    --er-primary:   #d7263d;   /* emergency red */
+    --er-primary-d: #b01e30;
+    --er-ink:       #1f2937;   /* dark slate */
+    --er-ink-2:     #0f172a;
+    --er-muted:     #6b7280;
+    --er-bg:        #f4f6f9;
+    --er-line:      #e5e7eb;
+    --er-radius:    .75rem;
+    --er-shadow:    0 6px 20px rgba(16,24,40,.08);
+}
+
+body { background: var(--er-bg); color: #222; }
+
+/* ---- Buttons ---- */
+.btn-brand {
+    background: var(--er-primary); border-color: var(--er-primary); color: #fff;
+}
+.btn-brand:hover, .btn-brand:focus { background: var(--er-primary-d); border-color: var(--er-primary-d); color: #fff; }
+.btn-ink { background: var(--er-ink); border-color: var(--er-ink); color: #fff; }
+.btn-ink:hover { background: var(--er-ink-2); border-color: var(--er-ink-2); color: #fff; }
+
+/* ---- Cards ---- */
+.er-card {
+    border: none; border-radius: var(--er-radius); background: #fff;
+    box-shadow: var(--er-shadow);
+}
+.er-card .card-header { background: #fff; border-bottom: 1px solid var(--er-line); font-weight: 600; }
+
+/* Stat card with an accent bar */
+.er-stat { border: none; border-radius: var(--er-radius); box-shadow: var(--er-shadow); overflow: hidden; }
+.er-stat .er-stat-value { font-size: 1.9rem; font-weight: 700; line-height: 1; }
+.er-stat .er-stat-label { color: var(--er-muted); font-size: .85rem; }
+.er-stat .er-stat-icon { font-size: 1.6rem; opacity: .9; }
+
+/* ---- Public navbar polish (works with existing .header/.nav markup) ---- */
+.header.sticky-top { background: #fff; box-shadow: 0 1px 0 var(--er-line); }
+.nav__link { font-weight: 600; letter-spacing: .02em; }
+.nav__link:hover { color: var(--er-primary); }
+
+/* ---- Section rhythm ---- */
+.er-section { padding: 4rem 0; }
+.er-eyebrow { color: var(--er-primary); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; font-size: .8rem; }
+
+/* ---- Sidebar (shared across dashboards) ---- */
+.er-side { min-height: 100vh; background: var(--er-ink); }
+.er-side a { color: #cbd5e1; display: block; padding: .7rem 1.15rem; text-decoration: none; border-left: 3px solid transparent; }
+.er-side a:hover, .er-side a.active { background: var(--er-ink-2); color: #fff; border-left-color: var(--er-primary); }
+.er-side .er-brand { color: #fff; font-weight: 700; padding: 1.1rem 1.15rem; font-size: 1.15rem; }
+
+/* ---- Footer ---- */
+.er-footer { background: var(--er-ink-2); color: #cbd5e1; }
+.er-footer a { color: #cbd5e1; text-decoration: none; }
+.er-footer a:hover { color: #fff; }
+
+/* ---- Utilities ---- */
+.er-hero-overlay { background: linear-gradient(90deg, rgba(15,23,42,.72), rgba(15,23,42,.25)); }
+.badge-soft-danger { background: rgba(215,38,61,.12); color: var(--er-primary-d); }
