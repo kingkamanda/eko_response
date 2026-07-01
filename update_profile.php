@@ -1,161 +1,115 @@
 <?php
 session_start();
-// Check if user is logged in (optional)
-// if (!isset($_SESSION['user'])) {
-//     header("Location: login.php");
-//     exit();
-// }
-
-// Include necessary files
-require_once "classes/User.php";
 require_once "user_guard.php";
-require_once "partials/dashboardhead.php";
-$user1 = new User();
+require_once "classes/User.php";
+
+// Always edit the signed-in user's own profile (ignore any ?id in the URL).
+$user1    = new User();
 $userdata = $user1->get_current_user($_SESSION["useronline"]);
-$firstname = $userdata["user_fullname"];
-$firstname = ucfirst($firstname);
+$firstname = ucfirst($userdata["user_fullname"] ?? 'User');
 
-// echo "<pre>";
-// print_r($userdata);
-// echo "</pre>";
-
-// Check if user ID is passed (GET method)
-
-if (isset($_GET['id'])) {
-    $user_id = $_GET['id'];
-    $user = new User();
-
-    // Retrieve user data by ID
-    $userdata = $user->get_current_user($user_id);
-
-    // Check if user data is retrieved successfully
-    if (!$userdata) {
-        // Handle user not found scenario (optional)
-        echo "Error: User not found.";
-        exit();
-    }
-}
-
-// Optional: Display error message from session (if set)
-if (isset($_SESSION['errormessage'])) {
-    echo "<div class='alert alert-danger'>" . $_SESSION['errormessage'] . "</div>";
-    unset($_SESSION['errormessage']); // Clear error message after display
-}
+$error    = $_SESSION['errormsg'] ?? null;   unset($_SESSION['errormsg']);
+$feedback = $_SESSION['feedback'] ?? null;   unset($_SESSION['feedback']);
+$gender   = strtolower((string)($userdata['user_gender'] ?? ''));
 ?>
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Profile - Eko Response</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <style>
+        body { background:#f4f6f9; }
+        .side { min-height:100vh; background:#1f2937; }
+        .side a { color:#cbd5e1; display:block; padding:.7rem 1.1rem; text-decoration:none; }
+        .side a:hover, .side a.active { background:#111827; color:#fff; }
+        .side .brand { color:#fff; font-weight:700; padding:1.1rem; }
+    </style>
+</head>
 <body>
-    <aside class="col-md-2 bg-light sidebar p-3">
-
-
-        <div class="top">
-            <div class="logo">
-                <a href="index.php" class="navbar-brand nav__logo">
-                    <i class="ri-fire-line"></i>Eko Response
-                </a>
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar (mirrors the dashboard) -->
+        <nav class="col-md-2 p-0 side">
+            <div class="brand"><i class="fa-solid fa-fire"></i> Eko Response</div>
+            <div class="text-center my-3 text-white">
+                <img src="uploads/<?php echo htmlspecialchars($userdata['user_image'] ?? ''); ?>"
+                     onerror="this.style.display='none'" class="rounded-circle" style="width:84px;height:84px;object-fit:cover;" alt="">
+                <div class="mt-2"><?php echo htmlspecialchars($firstname); ?></div>
+                <small class="text-secondary">User</small>
             </div>
-            <div class="close" id="close_btn">
-                <span class="material-symbols-sharp">
-                    close
-                </span>
+            <a href="user_dashboard.php"><i class="fa-solid fa-table-cells-large"></i><span class="px-2">Dashboard</span></a>
+            <a href="emergency_form.php"><i class="fa-solid fa-triangle-exclamation"></i><span class="px-2">Report Emergency</span></a>
+            <a href="hotzones.php"><i class="fa-solid fa-fire"></i><span class="px-2">Hot Zones</span></a>
+            <a href="request_emergency_type.php"><i class="fa-solid fa-lightbulb"></i><span class="px-2">Request Type</span></a>
+            <a href="update_profile.php" class="active"><i class="fa-solid fa-user"></i><span class="px-2">Update Profile</span></a>
+            <a href="index.php"><i class="fa-solid fa-house"></i><span class="px-2">Home</span></a>
+            <a href="logout.php"><i class="fa-solid fa-right-from-bracket"></i><span class="px-2">Logout</span></a>
+        </nav>
+
+        <!-- Content -->
+        <main class="col-md-10 px-4 py-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h3 class="mb-0">Update your profile</h3>
+                <a href="user_dashboard.php" class="btn btn-outline-secondary">Go to Dashboard</a>
             </div>
-        </div>
-        <!-- <div class="biola"> -->
-        <div class="text-center mb-4 ">
 
-            <!-- <img src="uploads/<?php //echo $userdata['user_image'] 
-                                    ?>" class="img-fluid" alt="admin image"> -->
-            <img src="uploads/<?php echo $userdata['user_image'] ?>" class="img-fluid rounded-circle mt-5" alt="User image" style="width:100px; border-radius:50%;">
+            <?php if ($error): ?><div class="alert alert-danger"><?php echo htmlspecialchars($error); ?></div><?php endif; ?>
+            <?php if ($feedback): ?><div class="alert alert-success"><?php echo htmlspecialchars($feedback); ?></div><?php endif; ?>
 
-            <!-- </div> -->
-            <h6><?php echo $firstname ?></h6>
-            <b><span>User</span></b>
-        </div>
-        <!-- </div> -->
-        <div>
-            <div class="list-group list-holder">
-                <!-- <div class="row mt-1">
-                        <div class="col-12"> -->
-                <!-- <div class="list-group" id="list-tab" role="tablist">
-                        <div class="col-sm-2 dashboard-cards shadow-lg p-3 mt-1">  -->
-                <a class="list-group-item list-group-item-action " id="list-home-list" data-bs-toggle="list" href="user_dashboard.php" role="tab" aria-controls="list-home"><i class="fas fa-th-large"></i><span class="px-2">Dashboard</span></a>
-                <a class="list-group-item list-group-item-action" id="list-profile-list" data-bs-toggle="list" href="#list-profile" role="tab" aria-controls="list-profile"><i class="fa-solid fa-users"></i><span class="px-2">Users</span></a>
-                <a class="list-group-item list-group-item-action" id="list-messages-list" data-bs-toggle="list" href="#list-messages" role="tab" aria-controls="list-messages"><i class="fa-solid fa-truck-medical"></i><span class="px-2">Ambulance</span></a>
-                <a class="list-group-item list-group-item-action" id="list-settings-list" data-bs-toggle="list" href="#list-settings" role="tab" aria-controls="list-settings"><i class="fa-solid fa-handcuffs"></i><span class="px-2">Police</span></a>
-                <a class="list-group-item list-group-item-action" id="list-settings-list" data-bs-toggle="list" href="#list-settings" role="tab" aria-controls="list-settings"><i class="fa-solid fa-star-of-life"></i><span class="px-2">Hospitals</span></a>
-                <a class="list-group-item list-group-item-action" id="list-settings-list" data-bs-toggle="list" href="#list-settings" role="tab" aria-controls="list-settings"><i class="fa-solid fa-fire-extinguisher"></i><span class="px-2">Fire Stations</span></a>
-                <a class="list-group-item list-group-item-action" id="list-settings-list" data-bs-toggle="list" href="update_profile.php?id=<?php echo $userdata['user_id']; ?>" role="tab" aria-controls="list-settings"><i class="fa-solid fa-user"></i><span class="px-2">Update Profile</span></a>
-                <a class="list-group-item list-group-item-action" id="list-settings-list" data-bs-toggle="list" href="#list-settings" role="tab" aria-controls="list-settings"><i class="fa-solid fa-gear"></i><span class="px-2">Settings</span></a>
-                <a class="list-group-item " id="list-settings-list" data-bs-toggle="list" href="logout.php" role="tab" aria-controls="list-settings"><i class="fa-solid fa-arrow-right-from-bracket"></i><span class="px-2">Logout</span></a>
-            </div>
-        </div>
-    </aside>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-4">
-
-                <?php if (isset($_SESSION['errormsg'])) {
-                ?>
-                    <div class='alert alert-danger'>
-                        <p> <?php echo $_SESSION['errormsg'] ?> </p>
+            <div class="row justify-content-center">
+                <div class="col-lg-7">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <form action="./process/process_updateprofile.php" method="post" enctype="multipart/form-data">
+                                <div class="mb-3">
+                                    <label class="form-label">Profile picture</label>
+                                    <input type="file" name="profile_pic" id="profile_pic" class="form-control" accept="image/*">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Full name</label>
+                                    <input type="text" name="name" class="form-control" value="<?php echo htmlspecialchars($userdata['user_fullname'] ?? ''); ?>" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" name="email" class="form-control" value="<?php echo htmlspecialchars($userdata['user_email'] ?? ''); ?>" required>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Phone number</label>
+                                        <input type="text" name="phonenumber" class="form-control" value="<?php echo htmlspecialchars($userdata['user_phone'] ?? ''); ?>">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Gender</label>
+                                        <select name="gender" class="form-select">
+                                            <option value="">Select gender</option>
+                                            <option value="male"   <?php echo $gender === 'male' ? 'selected' : ''; ?>>Male</option>
+                                            <option value="female" <?php echo $gender === 'female' ? 'selected' : ''; ?>>Female</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Date of birth</label>
+                                        <input type="date" name="age" class="form-control" value="<?php echo htmlspecialchars($userdata['user_age'] ?? ''); ?>">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Address</label>
+                                        <input type="text" name="address" class="form-control" value="<?php echo htmlspecialchars($userdata['user_address'] ?? ''); ?>">
+                                    </div>
+                                </div>
+                                <input type="hidden" name="id" value="<?php echo htmlspecialchars($userdata['user_id'] ?? ''); ?>">
+                                <button type="submit" class="btn btn-primary" name="btnupdate" value="btnupdate">Save profile</button>
+                            </form>
+                        </div>
                     </div>
-                <?php
-                    unset($_SESSION['errormsg']);
-                }
-                ?>
-
-                <?php if (isset($_SESSION['feedback'])) {
-                ?>
-                    <div class='alert alert-success'>
-                        <p> <?php echo $_SESSION['feedback'] ?> </p>
-                    </div>
-                <?php
-                    unset($_SESSION['feedback']);
-                }
-                ?>
-                <form action="./process/process_updateprofile.php" method="post" enctype="multipart/form-data">
-                    <br><br><br>
-                    <h1>Update Profile</h1>
-                    <div class="image_upload">
-                        <input type="file" name="profile_pic" id="profile_pic">
-                    </div>
-                    <br><br>
-                    <label for="name">Name</label>
-                    <input type="text" name="name" id="name" class="form-control" value="<?php echo (isset($userdata['user_fullname'])) ? $userdata['user_fullname'] : ""; ?>">
-                    <br>
-                    <labzel for="email">Email</label>
-                        <input type="email" name="email" id="email" class="form-control" value="<?php echo (isset($userdata['user_email'])) ? $userdata['user_email'] : ""; ?>">
-                        <br><br>
-                        <label for="Name">Phone Number</label>
-                        <input type="text" name="phonenumber" id="phonenumber" class="form-control" value="<?php echo (isset($userdata['user_phone'])) ? $userdata['user_phone'] : ""; ?>">
-                        <br><br>
-                        <label for="Name">Gender</label>
-                        <select name="gender" id="gender" class="form-control">
-                            <option value="">Select Gender</option>
-                            <option value="1" <?php echo (isset($userdata['user_gender']) && $userdata['user_gender'] == 1) ? 'selected' : ''; ?>>Male</option>
-                            <option value="2" <?php echo (isset($userdata['user_gender']) && $userdata['user_gender'] == 2) ? 'selected' : ''; ?>>Female</option>
-                        </select>
-                        <br><br>
-                        <label for="age">Age</label>
-                        <input type="date" name="age" id="age" class="form-control" value="<?php echo (isset($userdata['user_age'])) ? $userdata['user_age'] : ""; ?>">
-                        <br><br>
-                        <label for="Name">Address</label>
-                        <input type="text" name="address" id="address" class="form-control" value="<?php echo (isset($userdata['user_address'])) ? $userdata['user_address'] : ""; ?>">
-                        <input type="hidden" name="id" id="id" class="form-control" value="<?php echo (isset($userdata['user_id'])) ? $userdata['user_id'] : ""; ?>">
-                        <br><br>
-                        <button type="submit" class="btn btn-primary" name="btnupdate" value="btnupdate">Update Profile</button>
-                </form>
+                </div>
             </div>
-        </div>
+        </main>
     </div>
-    <script src="jquery-3.7.1.js"></script>
-    <script src="js/jquery-3.3.1.min.js"></script>
-    <script src="js/popper.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="bootstrap/js/bootstrap.bundle.js"></script>
-    <script src="js/main.js"></script>
-    <script type="text/javascript"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>
