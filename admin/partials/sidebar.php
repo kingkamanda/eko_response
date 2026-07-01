@@ -9,8 +9,9 @@ $pendingBadge = isset($pendingCount) && $pendingCount > 0
     ? ' <span class="badge bg-danger rounded-pill">' . (int) $pendingCount . '</span>'
     : '';
 ?>
-<nav class="col-md-2 p-0 sidebar">
-    <div class="brand"><i class="ri-fire-line"></i> Eko Response</div>
+<nav class="col-md-2 p-0 er-side">
+    <div class="er-brand"><i class="fa-solid fa-truck-medical text-danger"></i> Eko Response
+        <small>Administrator</small></div>
     <a href="admin_dashboard.php" class="<?php echo $active === 'dashboard' ? 'active' : ''; ?>">
         <span class="material-icons align-middle">dashboard</span> Dashboard</a>
     <a href="manage_emergencies.php" class="<?php echo $active === 'emergencies' ? 'active' : ''; ?>">

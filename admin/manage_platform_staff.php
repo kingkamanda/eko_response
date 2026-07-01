@@ -43,13 +43,13 @@ $pageTitle = 'Platform Staff - Eko Response';
 <div class="container-fluid">
     <div class="row">
         <?php $active = 'platform'; require "partials/sidebar.php"; ?>
-        <main class="col-md-10 px-4 py-4">
+        <main class="col-md-10 er-shell px-3 px-md-4 py-4">
             <h3 class="mb-1">Platform Staff</h3>
             <p class="text-muted">Managers and employees who work across the platform. They can review and
                 flag incidents from the <a href="../agency/login.php">staff portal</a>.</p>
             <?php if ($feedback): ?><div class="alert alert-info"><?php echo htmlspecialchars($feedback); ?></div><?php endif; ?>
 
-            <div class="card shadow-sm mb-4">
+            <div class="card er-card mb-4">
                 <div class="card-header"><h5 class="mb-0">Onboard a manager or employee</h5></div>
                 <div class="card-body">
                     <form method="post" class="row g-2 align-items-end">
@@ -72,10 +72,10 @@ $pageTitle = 'Platform Staff - Eko Response';
                 </div>
             </div>
 
-            <div class="card shadow-sm">
+            <div class="card er-card">
                 <div class="card-header"><h5 class="mb-0">Platform team</h5></div>
                 <div class="card-body table-responsive">
-                    <table class="table table-striped align-middle">
+                    <table class="table er-table table-hover align-middle">
                         <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Role</th><th>Status</th><th></th></tr></thead>
                         <tbody>
                         <?php if (empty($team)): ?>

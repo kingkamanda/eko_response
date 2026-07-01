@@ -31,7 +31,7 @@ $sevBadge = function ($s) {
 <div class="container-fluid">
     <div class="row">
         <?php $active = 'hotzones'; require "partials/sidebar.php"; ?>
-        <main class="col-md-10 px-4 py-4">
+        <main class="col-md-10 er-shell px-3 px-md-4 py-4">
             <h3 class="mb-1">Hot Zones</h3>
             <p class="text-muted">Areas are flagged <strong>hot</strong> automatically once they reach
                 <strong><?php echo (int)$threshold; ?></strong> or more reported emergencies.
@@ -45,7 +45,7 @@ $sevBadge = function ($s) {
                     <?php if (empty($priority)): ?>
                         <p class="text-muted mb-0">No emergencies reported in the last 24 hours.</p>
                     <?php else: ?>
-                        <table class="table table-sm align-middle mb-0">
+                        <table class="table er-table table-sm align-middle mb-0">
                             <thead><tr><th>#</th><th>Severity</th><th>Type</th><th>Area</th><th>Status</th><th>Reported</th></tr></thead>
                             <tbody>
                             <?php foreach ($priority as $p): ?>
@@ -64,14 +64,14 @@ $sevBadge = function ($s) {
                 </div>
             </div>
 
-            <div class="card shadow-sm mb-4">
+            <div class="card er-card mb-4">
                 <div class="card-body"><div id="map"></div></div>
             </div>
 
-            <div class="card shadow-sm">
+            <div class="card er-card">
                 <div class="card-header"><h5 class="mb-0">Hot zones (by LGA)</h5></div>
                 <div class="card-body table-responsive">
-                    <table class="table table-striped align-middle">
+                    <table class="table er-table table-hover align-middle">
                         <thead><tr><th>#</th><th>LGA</th><th>State</th><th>Total</th><th>Last 24h</th><th>Severe</th><th>Last report</th><th>Map</th></tr></thead>
                         <tbody>
                         <?php if (empty($zones)): ?>

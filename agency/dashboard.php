@@ -37,7 +37,7 @@ $pageTitle = 'Agency Dashboard - Eko Response';
 <div class="container-fluid">
     <div class="row">
         <?php $active = $isResponder ? 'assigned' : 'dashboard'; require "partials/sidebar.php"; ?>
-        <main class="col-md-10 px-4 py-4">
+        <main class="col-md-10 er-shell px-3 px-md-4 py-4">
             <h3 class="mb-1">Welcome, <?php echo htmlspecialchars($me['fullname']); ?></h3>
             <p class="text-muted"><?php echo htmlspecialchars($agencyName); ?> &middot;
                 <?php echo htmlspecialchars(ucwords(str_replace('_', ' ', $staffRole))); ?></p>
@@ -45,35 +45,39 @@ $pageTitle = 'Agency Dashboard - Eko Response';
             <!-- Stat cards -->
             <div class="row g-3 mb-4">
                 <div class="col-6 col-md-3">
-                    <div class="card stat-card shadow-sm text-white bg-primary h-100">
-                        <div class="card-body"><h6 class="mb-1">Total Emergencies</h6><h2><?php echo $stats['total']; ?></h2></div>
-                    </div>
+                    <div class="card er-stat h-100"><div class="card-body d-flex align-items-center">
+                        <span class="er-stat-icon text-primary me-3"><i class="fa-solid fa-triangle-exclamation"></i></span>
+                        <div><div class="er-stat-value"><?php echo $stats['total']; ?></div><div class="er-stat-label">Total Emergencies</div></div>
+                    </div></div>
                 </div>
                 <div class="col-6 col-md-3">
-                    <div class="card stat-card shadow-sm text-white bg-warning h-100">
-                        <div class="card-body"><h6 class="mb-1">Pending</h6><h2><?php echo $stats['pending']; ?></h2></div>
-                    </div>
+                    <div class="card er-stat h-100"><div class="card-body d-flex align-items-center">
+                        <span class="er-stat-icon text-warning me-3"><i class="fa-solid fa-hourglass-half"></i></span>
+                        <div><div class="er-stat-value"><?php echo $stats['pending']; ?></div><div class="er-stat-label">Pending</div></div>
+                    </div></div>
                 </div>
                 <div class="col-6 col-md-3">
-                    <div class="card stat-card shadow-sm text-white bg-success h-100">
-                        <div class="card-body"><h6 class="mb-1">Resolved</h6><h2><?php echo $stats['resolved']; ?></h2></div>
-                    </div>
+                    <div class="card er-stat h-100"><div class="card-body d-flex align-items-center">
+                        <span class="er-stat-icon text-success me-3"><i class="fa-solid fa-circle-check"></i></span>
+                        <div><div class="er-stat-value"><?php echo $stats['resolved']; ?></div><div class="er-stat-label">Resolved</div></div>
+                    </div></div>
                 </div>
                 <?php if (!$isResponder): // responders don't see team size ?>
                 <div class="col-6 col-md-3">
-                    <div class="card stat-card shadow-sm text-white bg-dark h-100">
-                        <div class="card-body"><h6 class="mb-1">Staff</h6><h2><?php echo $stats['staff']; ?></h2></div>
-                    </div>
+                    <div class="card er-stat h-100"><div class="card-body d-flex align-items-center">
+                        <span class="er-stat-icon text-dark me-3"><i class="fa-solid fa-users"></i></span>
+                        <div><div class="er-stat-value"><?php echo $stats['staff']; ?></div><div class="er-stat-label">Staff</div></div>
+                    </div></div>
                 </div>
                 <?php endif; ?>
             </div>
 
-            <div class="card shadow-sm">
+            <div class="card er-card">
                 <div class="card-header">
                     <h5 class="mb-0"><?php echo $isResponder ? 'My assigned emergencies' : 'Emergencies for your agency'; ?></h5>
                 </div>
                 <div class="card-body table-responsive">
-                    <table class="table table-striped align-middle">
+                    <table class="table er-table table-hover align-middle">
                         <thead>
                             <tr>
                                 <th>#</th><th>Type</th><th>Reporter</th><th>Location</th>

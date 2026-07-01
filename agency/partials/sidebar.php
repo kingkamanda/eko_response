@@ -8,9 +8,9 @@ $agencyName = $agencyName ?? 'Agency';
 $roleLabel  = ucwords(str_replace('_', ' ', $staffRole));
 $isPlatform = in_array($staffRole, ['platform_manager', 'platform_employee'], true);
 ?>
-<nav class="col-md-2 p-0 sidebar">
-    <div class="brand">
-        <i class="ri-shield-star-line"></i> Eko Response
+<nav class="col-md-2 p-0 er-side">
+    <div class="er-brand">
+        <i class="fa-solid fa-truck-medical text-danger"></i> Eko Response
         <small><?php echo htmlspecialchars($agencyName); ?> &middot; <?php echo htmlspecialchars($roleLabel); ?></small>
     </div>
 
