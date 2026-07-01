@@ -49,20 +49,18 @@ if (!$loc) {
     exit();
 }
 
-// Route to the response service relevant to the chosen emergency category.
-//   Fire service:   Fire(2), Flood(7), Building Collapse(8), Gas Leak(10)
-//   Police:         Theft/Crime(4), Kidnapping(11), Domestic Violence(12), Civil Unrest(15)
-//   Medical (default): Medical(1), Accident(3), Ambulance(6), Road Accident(9),
-//                      Electrocution(13), Drowning(14)
-$fireTypes   = [2, 7, 8, 10];
-$policeTypes = [4, 11, 12, 15];
-
-if (in_array($emergency, $fireTypes, true)) {
-    $page = "fire.php";
-} elseif (in_array($emergency, $policeTypes, true)) {
-    $page = "police.php";
-} else {
-    $page = "hospital.php";
+// Route to the response service defined for this emergency type's responsible
+// agency (set by the admin), falling back to medical units.
+switch ($incident->category_service($emergency)) {
+    case 'fire':
+        $page = "fire.php";
+        break;
+    case 'police':
+        $page = "police.php";
+        break;
+    default: // medical, other, or unset
+        $page = "hospital.php";
+        break;
 }
 
 header("location:../$page?loc=$loc");

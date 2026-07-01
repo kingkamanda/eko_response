@@ -13,41 +13,23 @@ $pending          = $totalEmergencies - $resolved;
 
 $feedback = $_SESSION['admin_feedback'] ?? null;
 unset($_SESSION['admin_feedback']);
+$pendingCount = $admin1->count_pending_categories();
 
 $sn = 1;
+$pageTitle = 'Admin Dashboard - Eko Response';
 ?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="./assets/static/bootstrap/css/bootstrap.min.css">
+    <?php require "partials/head.php"; ?>
     <link rel="stylesheet" type="text/css" href="./assets/static/dashboard2.css">
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <title>Admin Dashboard - Eko Response</title>
-    <style>
-        body { background:#f4f6f9; }
-        .sidebar { min-height: 100vh; background:#1f2937; }
-        .sidebar a { color:#cbd5e1; display:block; padding:.75rem 1.25rem; text-decoration:none; }
-        .sidebar a:hover, .sidebar a.active { background:#111827; color:#fff; }
-        .sidebar .brand { color:#fff; font-weight:700; padding:1.25rem; font-size:1.2rem; }
-        .stat-card { border:none; border-radius:.75rem; }
-        .stat-card h2 { font-weight:700; }
-    </style>
 </head>
 
 <body>
 <div class="container-fluid">
     <div class="row">
-        <!-- Sidebar -->
-        <nav class="col-md-2 p-0 sidebar">
-            <div class="brand"><i class="ri-fire-line"></i> Eko Response</div>
-            <a href="admin_dashboard.php" class="active"><span class="material-icons align-middle">dashboard</span> Dashboard</a>
-            <a href="manage_emergencies.php"><span class="material-icons align-middle">warning</span> Manage Emergencies</a>
-            <a href="admin_logout.php"><span class="material-icons align-middle">logout</span> Logout</a>
-        </nav>
+        <?php $active = 'dashboard'; require "partials/sidebar.php"; ?>
 
         <!-- Content -->
         <main class="col-md-10 px-4 py-4">

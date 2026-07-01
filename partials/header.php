@@ -65,6 +65,7 @@
                     <li><a href="index.php" class="nav__link">HOME</a></li>
                     <li><a href="about.php" class="nav__link">ABOUT US</a></li>
                     <li><a href="emergency.php" class="nav__link">REPORT EMERGENCY</a></li>
+                    <li><a href="hotzones.php" class="nav__link">HOT ZONES</a></li>
                     <li><a href="contact.php" class="nav__link">CONTACT US</a></li>
                 </ul>
             </div>

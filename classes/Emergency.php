@@ -92,12 +92,88 @@ class Incident extends Db
         return null;
     }
 
-    /** All emergency categories, for the report-form dropdown. */
+    /** Approved emergency categories, for the report-form dropdown. */
     public function fetch_category()
     {
-        $stmt = $this->dbconn->prepare("SELECT * FROM category ORDER BY category_name");
+        $stmt = $this->dbconn->prepare(
+            "SELECT * FROM category WHERE approval_status = 'approved' ORDER BY category_name"
+        );
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /** All agencies (for the 'suggest agency' dropdown when requesting a type). */
+    public function fetch_agencies()
+    {
+        return $this->dbconn->query("SELECT * FROM agency ORDER BY agency_name")
+            ->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Service type (police/fire/medical/other) responsible for a category,
+     * used to route a new report to the right response units.
+     */
+    public function category_service($category_id)
+    {
+        $stmt = $this->dbconn->prepare(
+            "SELECT a.agency_type
+             FROM category c LEFT JOIN agency a ON a.agency_id = c.agency_id
+             WHERE c.category_id = ?"
+        );
+        $stmt->execute([$category_id]);
+        return $stmt->fetchColumn() ?: null;
+    }
+
+    /** A logged-in user proposes a new emergency type for admin approval. */
+    public function request_category($name, $agency_id, $user_id)
+    {
+        $stmt = $this->dbconn->prepare(
+            "INSERT INTO category (category_name, agency_id, approval_status, requested_by)
+             VALUES (?, ?, 'pending', ?)"
+        );
+        return $stmt->execute([$name, $agency_id ?: null, $user_id]);
+    }
+
+    /** The emergency-type requests a user has submitted, with their status. */
+    public function fetch_user_category_requests($user_id)
+    {
+        $sql = "SELECT c.*, a.agency_name
+                FROM category c LEFT JOIN agency a ON a.agency_id = c.agency_id
+                WHERE c.requested_by = ?
+                ORDER BY c.category_id DESC";
+        $stmt = $this->dbconn->prepare($sql);
+        $stmt->execute([$user_id]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /** Hot zones (LGAs with many reports) for the public hot-zone view. */
+    public function hot_zones($threshold = 3, $limit = 20)
+    {
+        $limit = (int) $limit;
+        $sql = "SELECT l.lga_name, s.state_name, COUNT(e.alert_id) AS total,
+                       AVG(e.latitude) AS avg_lat, AVG(e.longitude) AS avg_lng
+                FROM emergency_alert_table e
+                JOIN lga l ON l.lga_id = e.lga_id
+                LEFT JOIN state s ON s.state_id = l.state_id
+                GROUP BY e.lga_id, l.lga_name, s.state_name
+                HAVING total >= ?
+                ORDER BY total DESC
+                LIMIT $limit";
+        $stmt = $this->dbconn->prepare($sql);
+        $stmt->execute([$threshold]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /** Reported points with coordinates, for plotting the hot-zone map. */
+    public function incident_points($limit = 500)
+    {
+        $limit = (int) $limit;
+        $sql = "SELECT e.latitude, e.longitude, c.category_name, e.alert_status
+                FROM emergency_alert_table e
+                LEFT JOIN category c ON c.category_id = e.emergency_type
+                WHERE e.latitude IS NOT NULL AND e.longitude IS NOT NULL
+                ORDER BY e.alert_id DESC LIMIT $limit";
+        return $this->dbconn->query($sql)->fetchAll(PDO::FETCH_ASSOC);
     }
 
     /** Reports filed by a single user, newest first. */
