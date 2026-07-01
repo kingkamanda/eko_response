@@ -32,6 +32,9 @@ $check = $user->insert_user($fullname, $email, $password, $state, $lga);
 
 if ($check) {
     $_SESSION['useronline'] = $check;
+    $_SESSION['user_id'] = $check;
+    $_SESSION['logged_in'] = true;
+    $_SESSION['loggedin'] = true;
     // Send new users straight to their profile to complete their details.
     $_SESSION['feedback'] = 'Welcome! Please complete your profile.';
     header('location:../update_profile.php?id=' . $check);

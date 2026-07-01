@@ -17,6 +17,9 @@ $data = $user->login($email, $password);
 
 if ($data) {
     $_SESSION['useronline'] = $data;
+    $_SESSION['user_id'] = $data;
+    $_SESSION['logged_in'] = true;
+    $_SESSION['loggedin'] = true;
     header("location:../user_dashboard.php");
     exit();
 }

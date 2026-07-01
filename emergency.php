@@ -129,14 +129,14 @@ div{
                         <div class="col-md-12 rounded-pill" style="min-height: 50px;">
                         <div class="col-md-12 rounded-pill shadow" style="min-height: 50px;">
                             <div class="row justify-content-center">
-                            <div class="col-6 col-md-3">
+                          <!-- <div class="col-6 col-md-3">
                                 <div class="">
                                 <div class="">
                                     <i class="fa-solid fa-bell fa-2x"></i>
                                     <h5 class="card-title mt-2">Notification</h5>
                                 </div>
                                 </div>
-                            </div>
+                            </div>-->
 
                             <div class="col-6 col-md-3">
                                 <div class="">

@@ -1,9 +1,7 @@
 <?php
 require_once "partials/header.php";
 ?>
-  <title>Contact Us - Emergency Response Africa</title>
-  
-  <style>
+<style>
     /* .contact-info {
       border-bottom: 1px solid #ddd;
       padding-bottom: 15px;
@@ -87,9 +85,7 @@ h2 {
   border-radius: 20px;
   padding: 10px 30px;
 }
-  </style>
-</head>
-<body>
+</style>
 
 <div class="container-fluid">
     <div class="row">
@@ -99,7 +95,7 @@ h2 {
                     <div class="col-md-6">
                         <h2 class="text-danger">CONTACT US</h2>
                         <h3 class="font-weight-bold">We want to hear from you, help us improve.</h3>
-                        <p>If this is an emergency, click <strong><a href="">Here</a></strong> immediately or submit an Emergency request via our platform by filling the <span class="text-danger">emergency form</span> on our Application.</p>
+                        <p>If this is an emergency, click <strong><a href="emergency.php">Here</a></strong> immediately or submit an Emergency request via our platform by filling the <span class="text-danger">emergency form</span> on our Application.</p>
                         <div class="row mt-4">
                             <div class="col-md-4 text-center">
                                 <i class="fas fa-map-marker-alt fa-2x mb-2"></i>
@@ -107,14 +103,15 @@ h2 {
                                 <p>5 Commercial Avenue, Sabo, Yaba, Lagos, Nigeria</p>
                             </div>
                             <div class="col-md-4 text-center">
+                                
                                 <i class="fas fa-phone fa-2x mb-2"></i>
                                 <h5 class="font-weight-bold">Call Us</h5>
-                                <p>(+234)70332896785<br>(+234)8023078060</p>
+                                <p><a href="tel:+23470332896785" class="text-decoration-none text-dark">(+234)70332896785</a><br><a href="tel:+2348023078060" class="text-decoration-none text-dark">(+234)8023078060</a></p>
                             </div>
                             <div class="col-md-4 text-center">
                                 <i class="fas fa-envelope fa-2x mb-2"></i>
                                 <h5 class="font-weight-bold">Email Us</h5>
-                                <p>contact@<span class="text-danger">ekoresponse<br></span>rescue.com</p>
+                                <p><a href="mailto:contact@ekoresponse.com" class="text-decoration-none text-dark">contact@<span class="text-danger">ekoresponse.com</span></a></p>
                             </div>
                         </div>
                     </div>
@@ -210,18 +207,18 @@ h2 {
             </div>
         </section>
 
-        <section>
-            <div class="container-fluid bg-dark text-light py-5">
+       <section class="mid-section d-flex align-items-center my-5" style="height: 70vh; ">
+    <div class="container-fluid text-light py-5" style="background-color: var(--black-color);">
                 <div class="row justify-content-center">
-                <div class="col-md-6 text-center">
-                    <h5>CONTACT US</h5>
-                    <h2>Need help now? Call our toll free number</h2>
-                    <h1 class="mb-4">0 7003 3296 785</h1>
-                    <button class="btn btn-danger btn-lg call-btn">CALL US</button>
-                </div>
+                    <a href="tel:07003296785" class="col-md-6 text-center text-decoration-none text-light">
+                        <h5>CONTACT US</h5>
+                        <h2>Need help now? Call our toll free number</h2>
+                        <h1 class="mb-4">0 7003 3296 785</h1>
+                        <span class="btn btn-danger btn-lg call-btn">CALL US</span>
+                    </a>
                 </div>
             </div>
-        </section>
+</section>
     </div>
 </div>
 
@@ -259,5 +256,3 @@ require_once "partials/footer.php"
 });
 
 </script>
-</body>
-</html>

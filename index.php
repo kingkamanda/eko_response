@@ -1,4 +1,18 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+$loggedIn = false;
+$sessionKeys = ['useronline', 'user_id', 'user', 'loggedin', 'logged_in', 'is_logged_in', 'email', 'user_email'];
+
+foreach ($sessionKeys as $key) {
+    if (!empty($_SESSION[$key])) {
+        $loggedIn = true;
+        break;
+    }
+}
+
 require_once "partials/header.php";
 ?>
 
@@ -18,21 +32,34 @@ require_once "partials/header.php";
 
                 <div class="button-carrier col-md mt-3"  >
                     <div class="row p-2 h-100">
-                    <div class="col-md-3">
-                        <a href="tel:07033296785" class="btn btn-dark  btn-block">
-                        <span><i class="ri-phone-fill"></i></span> <span>Call Us</span>
-                        </a>
-                    </div>
-                    <div class="col-md-3">
-                        <a href="emergency.php" class="btn btn-danger  btn-block">
-                        <span><i class="ri-alarm-warning-fill"></i></span> <span>Create Emergency</span>
-                        </a>
-                    </div>
-                    <div class="col-md-3">
-                        <a href="login_signup.php?form=signup" class="btn btn-primary btn-block">
-                        <span><i class="ri-user-add-line"></i></span> <span>Register</span>
-                        </a>
-                    </div>
+                        <div class="col-md-3">
+                            <a href="tel:07033296785" class="btn btn-dark btn-block">
+                                <span><i class="ri-phone-fill"></i></span> <span>Call Us</span>
+                            </a>
+                        </div>
+                        <div class="col-md-3">
+                            <a href="emergency.php" class="btn btn-danger btn-block">
+                                <span><i class="ri-alarm-warning-fill"></i></span> <span>Create Emergency</span>
+                            </a>
+                        </div>
+                        <?php if ($loggedIn): ?>
+                            <div class="col-md-3">
+                                <a href="user_dashboard.php" class="btn btn-success btn-block">
+                                    <span><i class="ri-dashboard-line"></i></span> <span>Return to Dashboard</span>
+                                </a>
+                            </div>
+                     <?php else: ?>
+                           <!--  <div class="col-md-3">
+                                <a href="login_signup.php?form=login" class="btn btn-outline-light btn-block">
+                                    <span><i class="ri-login-box-line"></i></span> <span>Login</span>
+                                </a>
+                            </div>
+                            <div class="col-md-3">
+                                <a href="login_signup.php?form=signup" class="btn btn-primary btn-block">
+                                    <span><i class="ri-user-add-line"></i></span> <span>Register</span>
+                                </a>
+                            </div>-->
+                        <?php endif; ?>
                     </div>
                 </div>
                 
@@ -178,12 +205,12 @@ require_once "partials/header.php";
 <section class="mid-section d-flex align-items-center my-5" style="height: 70vh; ">
     <div class="container-fluid text-light py-5" style="background-color: var(--black-color);">
                 <div class="row justify-content-center">
-                <div class="col-md-6 text-center">
-                    <h5>CONTACT US</h5>
-                    <h2>Need help now? Call our toll free number</h2>
-                    <h1 class="mb-4">0 7003 3296 785</h1>
-                    <button class="btn btn-danger btn-lg call-btn">CALL US</button>
-                </div>
+                    <a href="tel:07003296785" class="col-md-6 text-center text-decoration-none text-light">
+                        <h5>CONTACT US</h5>
+                        <h2>Need help now? Call our toll free number</h2>
+                        <h1 class="mb-4">0 7003 3296 785</h1>
+                        <span class="btn btn-danger btn-lg call-btn">CALL US</span>
+                    </a>
                 </div>
             </div>
 </section>

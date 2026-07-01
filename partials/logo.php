@@ -22,11 +22,11 @@
             </div>
            
            
-           <div class="d-flex align-items-center justify-content-end modal-btn">
+           <!-- <div class="d-flex align-items-center justify-content-end modal-btn">
             <form action="login_signup.php" method="post">
                     <button type="submit" class="btn btn-dark">Login</button>
             </form>
-           </div>
+           </div> -->
         </nav>
     </div>
 

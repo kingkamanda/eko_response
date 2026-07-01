@@ -17,7 +17,7 @@
     /* ==========FONTS AND TYPOGRAPHY============*/
     /* .5rem = 8px | 1rem = 16px */
     --body-font: "Montserrat", sans-serif;
-    --normal-font-size: .938rem
+    --normal-font-size: .938rem;
 
     /*========== FONT WEIGTH =================*/
 
@@ -42,10 +42,6 @@
         margin: 0;
     }
 
-    body{
-    
-    }
-
     ul{
         list-style: none;
     }
@@ -56,13 +52,14 @@
 
     /* =========REUSABLE CSS CLASSES=========== */
     .container{
-        /* max-width: 100%; */
-        margin-inline: 1.5rem;
+        width: 100%;
+        max-width: 1440px;
+        margin-inline: auto;
+        padding-inline: 1.5rem;
     }
 
     /* =============HEADER==================== */
     .header{
-        /* position: fixed; */
         top: 0;
         left: 0;
         width: 100%;
@@ -71,14 +68,20 @@
         z-index: var(--z-fixed);
         display: flex;
         justify-content: center;
+        padding-block: 0.25rem;
     }
 
     /* ================NAV =====================*/
     .nav{
-        height: var(--header-height);
+        min-height: var(--header-height);
+        width: 100%;
         font-family: var(--body-font);
         font-size: var(--normal-font-size);
-        /* background-color: var(--body-color); */
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1.25rem;
+        padding-block: 0.35rem;
     }
 
     .nav__logo,
@@ -88,11 +91,12 @@
     }
 
     .nav__data{
-        /* height: 100%; */
-        /* width: 100%; */
         display: flex;
         justify-content: space-between;
         align-items: center;
+        gap: .9rem;
+        flex: 0 0 auto;
+        padding-right: 0.25rem;
     }
 
     .nav__logo{
@@ -100,6 +104,7 @@
         align-items: center;
         column-gap: .25rem;
         font-weight: var(--font-semi-bold);
+        white-space: nowrap;
     }
 
     .nav__logo i{
@@ -111,7 +116,12 @@
         position: relative;
         width: 32px;
         height: 32px;
-        background-color: grey;
+        background-color: rgba(255, 255, 255, 0.12);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
     }
 
     .nav__burger,
@@ -130,41 +140,61 @@
         opacity: 0;
     }
 
+    .modal-btn{
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: .7rem;
+        flex-wrap: wrap;
+        margin-left: auto;
+        padding-left: 0.5rem;
+    }
+
     /* ========NAVIGATION FOR MOBILE DEVICES =====*/
     @media screen and (max-width: 1118px){
-        
         .nav__menu{
             position: absolute;
             left: 0;
-            top:2.5rem;
-            width: 100%;
-            /* background-color: grey; */
+            top: 2.5rem;
+            width: min(92vw, 420px);
+            max-width: 420px;
             height: calc(100vh - 3.5rem);
             overflow: auto;
             pointer-events: none;
             opacity: 0;
             transition: top .4s, opacity .3s;
+            border-radius: 0 0 1rem 0;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
         }
+
         .nav__menu::-webkit-scrollbar{
             width: 0;
         }
+
         .nav__list{
             background-color: var(--black-color);
-            padding-top: 1rem;
+            padding: 1rem 0.75rem 1.25rem;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 0.35rem;
         }
-    }    
-        .nav__link{
+    }
+    .nav__link{
         color: var(--white-color);
         background-color: var(--black-color);
-        font-weight:var(--font-semi-bold);
-        padding: 1.25rem 1.5rem;
+        font-weight: var(--font-semi-bold);
+        padding: 0.95rem 1rem;
         display: flex;
         justify-content: space-between;
         align-items: center;
         transition: background-color .3s;
+        border-radius: 0.7rem;
+        min-height: 48px;
     }
 
-    .nav__link:hover{
+    .nav__link:hover,
+    .nav__link:focus-visible{
         background-color: var(--black-color-light);
     }
     /* show menu*/
@@ -172,6 +202,11 @@
         opacity: 1;
         top: 3.5rem;
         pointer-events: initial;
+    }
+
+    .modal-btn .btn{
+        min-height: 1px;
+        padding-inline: 0.85rem;
     }
     /*Show icon*/
     .show-icon .nav__burger{
@@ -253,9 +288,15 @@
         .nav__list{
             height: 100%;
             display: flex;
+            align-items: center;
             column-gap: 2rem;
-            
-        }   
+        }
+
+        .nav__menu{
+            display: flex;
+            align-items: center;
+            margin-left: auto;
+        }
         .nav__link{
             height: 100%;
             padding: 0;
@@ -314,21 +355,20 @@
  /*for small devices*/
         @media screen and (max-width: 640px) and (min-width: 320px) {
     .container{
-            margin-inline: 1rem;
-           
+            padding-inline: .75rem;
         }
     .nav__link{
             padding-inline: 1rem;
         }
 
     .nav__data{
-        width: 50%;
+        width: auto;
         height: 100%;
     }
+
     .modal-btn{
-        display: flex;
-        justify-content: end;
-        align-items: center;
+        gap: .35rem;
+        padding-left: .25rem;
     }
     }
 

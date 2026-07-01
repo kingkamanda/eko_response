@@ -1,3 +1,17 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+$loggedIn = !empty($_SESSION['useronline'])
+    || !empty($_SESSION['user_id'])
+    || !empty($_SESSION['logged_in'])
+    || !empty($_SESSION['loggedin'])
+    || !empty($_SESSION['is_logged_in'])
+    || !empty($_SESSION['user'])
+    || !empty($_SESSION['email'])
+    || !empty($_SESSION['user_email']);
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -74,8 +88,12 @@
              
            </div>
            <div class="d-flex align-items-center justify-content-end modal-btn gap-2">
-                <a href="login_signup.php" class="btn btn-outline-primary">Login</a>
-                <a href="login_signup.php?form=signup" class="btn btn-primary">Register</a>
+                <?php if ($loggedIn): ?>
+                    <a href="user_dashboard.php" class="btn btn-primary">Return to Dashboard</a>
+                <?php else: ?>
+                    <a href="login_signup.php" class="btn btn-outline-primary">Login</a>
+                    <a href="login_signup.php?form=signup" class="btn btn-primary">Register</a>
+                <?php endif; ?>
            </div>
         </nav>
     </header>

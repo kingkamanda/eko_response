@@ -16,7 +16,7 @@ ul{
                             <h5 class="font-weight-bold text-light">Company</h5>
                             <ul class="list-unstyled">
                                 <li><a href="index.php" style="text-decoration: none;" class="text-light">Home</a></li>
-                                <li><a href="about.php" style="text-decoration: none;" class="text-light">About Us</a></li>
+                               <!-- <li><a href="about.php" style="text-decoration: none;" class="text-light">About Us</a></li>--->
                                 <li><a href="emergency.php" style="text-decoration: none;" class="text-light">Services</a></li>
                             </ul>
                         </div>
@@ -32,23 +32,16 @@ ul{
                         <div class="col-md-3">
                             <h5 class="font-weight-bold text-light">Partners</h5>
                             <ul class="list-unstyled">
-                                <li><a href="#" style="text-decoration: none;" class="text-light">Lagos State Government</a></li>
-                                <li><a href="#" style="text-decoration: none;" class="text-light">Nigerian Police</a></li>
-                                <li><a href="#" style="text-decoration: none;" class="text-light">Federal Fire Service</a></li>
-                                <li><a href="#" style="text-decoration: none;" class="text-light">Federal Mistry of health</a></li>
+                                <li><a href="https://lagosstate.gov.ng/" style="text-decoration: none;" class="text-light">Lagos State Government</a></li>
+                                <li><a href="https://npf.gov.ng/" style="text-decoration: none;" class="text-light">Nigerian Police</a></li>
+                                <li><a href="https://fedfire.gov.ng/" style="text-decoration: none;" class="text-light">Federal Fire Service</a></li>
+                                <li><a href="https://health.gov.ng/" style="text-decoration: none;" class="text-light">Federal Ministry of health</a></li>
                             </ul>
                         </div>
                         <div class="col-md-3">
-                            <h5 class="font-weight-bold text-light">Subscribe</h5>
-                            <form action="#">
-                                <div class="input-group mb-3">
-                                    <input type="email" class="form-control" placeholder="email address" aria-label="Email">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-danger" type="button">&rarr;</button>
-                                    </div>
-                                </div>
-                            </form>
-                            <p class="text-light">Subscribe to our newsletter and stay informed with everything <span class="text-danger">Eko Response</span> related. Sign up with your email address to receive news and updates.</p>
+                            <h5 class="font-weight-bold text-light">About Us</h5>
+                            
+                            <p class="text-light">Welcome to <span class="text-danger">Eko Response</span> a platform built to simplify communication and deliver fast, reliable responses. Our mission is to provide users with an efficient, user-friendly experience that helps them connect, manage requests, and get the information they need quickly. We're committed to making every interaction seamless, secure, and effective.</p>
                         </div>
                     </div>
                     <div class="row mt-4">
