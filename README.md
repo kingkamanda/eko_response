@@ -39,6 +39,7 @@ Administrators manage users and emergencies from a dedicated dashboard.
 ├── upgrade2.sql           Schema upgrade: agencies + emergency-type governance
 ├── upgrade3.sql           Schema upgrade: agency staff + response tracking
 ├── upgrade4.sql           Schema upgrade: severity + feedback + timeline
+├── upgrade5.sql           Schema upgrade: agency states + flags + incident detail
 ├── SETUP.md               Detailed step-by-step setup guide
 ├── SEED_ACCOUNTS.md       All seeded logins + how work flows between roles
 └── Eko Response ERD.png   Entity-relationship diagram

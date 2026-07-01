@@ -5,14 +5,21 @@ require_once "./classes/Admin.php";
 
 $admin = new Admin();
 
-// Handle a status update.
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['alert_id'], $_POST['status'])) {
+// Handle status updates and flagging.
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $alert_id = filter_input(INPUT_POST, 'alert_id', FILTER_VALIDATE_INT);
-    $status   = $_POST['status'];
-    $allowed  = ['pending', 'enroute', 'resolved'];
-    if ($alert_id && in_array($status, $allowed, true)) {
-        $admin->update_emergency_status($alert_id, $status);
-        $_SESSION['emg_feedback'] = "Emergency #$alert_id marked as $status.";
+    $action   = $_POST['action'] ?? 'status';
+    if ($alert_id && $action === 'status' && isset($_POST['status'])) {
+        if (in_array($_POST['status'], ['pending', 'enroute', 'resolved'], true)) {
+            $admin->update_emergency_status($alert_id, $_POST['status']);
+            $_SESSION['emg_feedback'] = "Emergency #$alert_id marked as {$_POST['status']}.";
+        }
+    } elseif ($alert_id && $action === 'flag') {
+        $admin->flag_incident($alert_id, trim($_POST['flag_reason'] ?? 'Flagged for review'));
+        $_SESSION['emg_feedback'] = "Emergency #$alert_id flagged.";
+    } elseif ($alert_id && $action === 'unflag') {
+        $admin->unflag_incident($alert_id);
+        $_SESSION['emg_feedback'] = "Emergency #$alert_id unflagged.";
     }
     header("location: manage_emergencies.php");
     exit();
@@ -69,7 +76,10 @@ $pageTitle = 'Manage Emergencies - Eko Response';
                             <tr><td colspan="8" class="text-center text-muted py-4">No emergencies reported yet.</td></tr>
                         <?php else: foreach ($emergencies as $e): ?>
                             <tr>
-                                <th scope="row"><?php echo (int) $e['alert_id']; ?></th>
+                                <th scope="row">
+                                    <?php echo (int) $e['alert_id']; ?>
+                                    <?php if (!empty($e['flagged'])): ?><span class="d-block badge bg-danger" title="<?php echo htmlspecialchars($e['flag_reason'] ?? ''); ?>">⚑ flagged</span><?php endif; ?>
+                                </th>
                                 <td><?php echo htmlspecialchars($e['reporter'] ?? $e['user_fullname'] ?? 'Unknown'); ?></td>
                                 <td><?php echo htmlspecialchars($e['category_name'] ?? '—'); ?></td>
                                 <td><?php echo htmlspecialchars($e['user_phone'] ?? ''); ?></td>
@@ -90,8 +100,9 @@ $pageTitle = 'Manage Emergencies - Eko Response';
                                 </td>
                                 <td><span class="badge <?php echo $badgeClass($e['alert_status']); ?>"><?php echo htmlspecialchars($e['alert_status'] ?? 'pending'); ?></span></td>
                                 <td>
-                                    <form action="manage_emergencies.php" method="post" class="d-flex gap-1">
+                                    <form action="manage_emergencies.php" method="post" class="d-flex gap-1 mb-1">
                                         <input type="hidden" name="alert_id" value="<?php echo (int) $e['alert_id']; ?>">
+                                        <input type="hidden" name="action" value="status">
                                         <select name="status" class="form-select form-select-sm" style="width:auto;">
                                             <?php foreach (['pending', 'enroute', 'resolved'] as $opt): ?>
                                                 <option value="<?php echo $opt; ?>" <?php echo (strtolower((string) $e['alert_status']) === $opt) ? 'selected' : ''; ?>>
@@ -101,6 +112,20 @@ $pageTitle = 'Manage Emergencies - Eko Response';
                                         </select>
                                         <button type="submit" class="btn btn-primary btn-sm">Save</button>
                                     </form>
+                                    <?php if (empty($e['flagged'])): ?>
+                                        <form action="manage_emergencies.php" method="post" class="d-flex gap-1">
+                                            <input type="hidden" name="alert_id" value="<?php echo (int) $e['alert_id']; ?>">
+                                            <input type="hidden" name="action" value="flag">
+                                            <input type="text" name="flag_reason" class="form-control form-control-sm" placeholder="reason" style="width:110px;">
+                                            <button class="btn btn-outline-danger btn-sm">⚑ Flag</button>
+                                        </form>
+                                    <?php else: ?>
+                                        <form action="manage_emergencies.php" method="post">
+                                            <input type="hidden" name="alert_id" value="<?php echo (int) $e['alert_id']; ?>">
+                                            <input type="hidden" name="action" value="unflag">
+                                            <button class="btn btn-outline-secondary btn-sm">Unflag</button>
+                                        </form>
+                                    <?php endif; ?>
                                 </td>
                             </tr>
                         <?php endforeach; endif; ?>

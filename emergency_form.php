@@ -126,6 +126,38 @@ unset($_SESSION['errormsg']);
                         <input type="file" class="form-control" name="videoUpload" id="videoUpload" accept="video/*">
                     </div>
                     <div class="form-group mt-3">
+                        <label for="landmark">Nearest landmark (optional)</label>
+                        <input type="text" class="form-control" id="landmark" name="landmark" placeholder="e.g. Opposite First Bank">
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="route">Route / directions (optional)</label>
+                        <input type="text" class="form-control" id="route" name="route" placeholder="e.g. Along Ikorodu Road, inbound">
+                    </div>
+                    <div class="row">
+                        <div class="form-group mt-3 col-md-4">
+                            <label for="people_involved">People involved</label>
+                            <input type="number" min="0" class="form-control" id="people_involved" name="people_involved">
+                        </div>
+                        <div class="form-group mt-3 col-md-4">
+                            <label for="affected_gender">Gender(s) affected</label>
+                            <select class="form-select" id="affected_gender" name="affected_gender">
+                                <option value="">Not sure</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="mixed">Mixed</option>
+                            </select>
+                        </div>
+                        <div class="form-group mt-3 col-md-4">
+                            <label for="offender_gender">Offender gender (if a crime)</label>
+                            <select class="form-select" id="offender_gender" name="offender_gender">
+                                <option value="">Unknown / N/A</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="mixed">Mixed</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group mt-3">
                         <label for="description">Description</label>
                         <textarea class="form-control" id="description" rows="3" name="desc"></textarea>
                     </div>

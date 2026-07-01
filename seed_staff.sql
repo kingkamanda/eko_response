@@ -23,4 +23,7 @@ INSERT INTO `staff` (`fullname`, `email`, `password`, `role`, `agency_id`, `phon
 ('Emeka Obi',      'fire.responder@ekoresponse.test',   '$2y$12$b75AvbQ4J9cdarjOPhpb.O2e40Czq/90mF.nARChVbtMFFDZQa2Iu', 'responder',    2, '08030000005'),
 -- Medical / LASAMBUS
 ('Ngozi Eze',      'medical.admin@ekoresponse.test',    '$2y$12$b75AvbQ4J9cdarjOPhpb.O2e40Czq/90mF.nARChVbtMFFDZQa2Iu', 'agency_admin', 3, '08030000006'),
-('Tunde Bakare',   'medical.responder@ekoresponse.test','$2y$12$b75AvbQ4J9cdarjOPhpb.O2e40Czq/90mF.nARChVbtMFFDZQa2Iu', 'responder',    3, '08030000007');
+('Tunde Bakare',   'medical.responder@ekoresponse.test','$2y$12$b75AvbQ4J9cdarjOPhpb.O2e40Czq/90mF.nARChVbtMFFDZQa2Iu', 'responder',    3, '08030000007'),
+-- Platform staff (no agency): work across the whole platform, can flag incidents
+('Zainab Yusuf',   'platform.manager@ekoresponse.test', '$2y$12$b75AvbQ4J9cdarjOPhpb.O2e40Czq/90mF.nARChVbtMFFDZQa2Iu', 'platform_manager',  NULL, '08030000008'),
+('Kunle Salami',   'platform.employee@ekoresponse.test','$2y$12$b75AvbQ4J9cdarjOPhpb.O2e40Czq/90mF.nARChVbtMFFDZQa2Iu', 'platform_employee', NULL, '08030000009');

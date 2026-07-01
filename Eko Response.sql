@@ -1575,3 +1575,21 @@ CREATE TABLE IF NOT EXISTS `feedback` (
   KEY `feedback_user_idx` (`user_id`),
   KEY `feedback_alert_idx` (`alert_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ---------------------------------------------------------------------------
+-- Phase 4 additions: agency states, flags, richer incident detail
+-- ---------------------------------------------------------------------------
+
+ALTER TABLE `agency`
+  ADD COLUMN `state_id` int(11) DEFAULT NULL;
+UPDATE `agency` SET `state_id` = 24 WHERE `state_id` IS NULL;
+
+ALTER TABLE `emergency_alert_table`
+  ADD COLUMN `created_at`      timestamp   NULL DEFAULT CURRENT_TIMESTAMP,
+  ADD COLUMN `flagged`         tinyint(1)  NOT NULL DEFAULT 0,
+  ADD COLUMN `flag_reason`     varchar(255) DEFAULT NULL,
+  ADD COLUMN `landmark`        varchar(200) DEFAULT NULL,
+  ADD COLUMN `route`           varchar(200) DEFAULT NULL,
+  ADD COLUMN `people_involved` int(11)     DEFAULT NULL,
+  ADD COLUMN `affected_gender` varchar(20) DEFAULT NULL,
+  ADD COLUMN `offender_gender` varchar(20) DEFAULT NULL;

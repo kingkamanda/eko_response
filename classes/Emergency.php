@@ -35,7 +35,8 @@ class Incident extends Db
         $description,
         $lga,
         $latitude = null,
-        $longitude = null
+        $longitude = null,
+        $extra = []
     ) {
         try {
             $imageName = $this->saveUpload($incident_img, ['jpg', 'jpeg', 'png', 'gif']);
@@ -46,14 +47,20 @@ class Incident extends Db
             $query = "INSERT INTO emergency_alert_table
                         (user_id, user_fullname, user_phone, user_location, emergency_type,
                          severity, alert_status, alert_time, emergency_alert_image, emergency_alert_video,
-                         alert_desc, lga_id, latitude, longitude)
-                      VALUES (?, ?, ?, ?, ?, ?, 'pending', ?, ?, ?, ?, ?, ?, ?)";
+                         alert_desc, lga_id, latitude, longitude,
+                         landmark, route, people_involved, affected_gender, offender_gender)
+                      VALUES (?, ?, ?, ?, ?, ?, 'pending', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = $this->dbconn->prepare($query);
             $stmt->execute([
                 $user_id, $fullname, $phone, $location, $emergency,
                 $status, $time, $imageName, $videoName, $description, $lga,
                 $latitude !== null && $latitude !== '' ? $latitude : null,
-                $longitude !== null && $longitude !== '' ? $longitude : null
+                $longitude !== null && $longitude !== '' ? $longitude : null,
+                $extra['landmark'] ?? null,
+                $extra['route'] ?? null,
+                isset($extra['people_involved']) && $extra['people_involved'] !== '' ? (int) $extra['people_involved'] : null,
+                $extra['affected_gender'] ?? null,
+                $extra['offender_gender'] ?? null
             ]);
 
             return $this->dbconn->lastInsertId() ? (int) $lga : 0;
