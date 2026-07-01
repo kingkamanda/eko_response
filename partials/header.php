@@ -17,64 +17,44 @@
 
     <title>Eko Response - Emergency Response for Lagos</title>
 </head>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
-
-#sticky-btn {
-    position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 9999;
-  cursor: pointer;
-  background-color: #25D366;
-  /*color: #fff;
-  padding: 10px 15px;
-  border-radius: 5px;
-  text-decoration: none; */
-}
-
-#sticky-btn i {
-  font-size: 20px;
-   color: #fff;
-}
-</style>
 
 <body>
-    <!-- =========HEADER =================-->
-    <header class="header sticky-top">
-        <nav class="nav container">
-            <div class="nav__data">
-                <a href="index.php" class="nav__logo">
-                    <i class="ri-fire-line"></i>Eko Response
-                </a>     
-                    <div class="nav__toggle" id="nav-toggle">
-                        <i class="ri-menu-line nav__burger"></i>
-                        <i class="ri-close-line nav__close"></i>
-                    </div>
-            </div>
-            <!-- =========NAV MENU ============-->
-           <!---- show-menu-->
-            <div class="nav__menu " id="nav-menu">
-                 <ul class="nav__list">
-                    <li><a href="index.php" class="nav__link">HOME</a></li>
-                    <li><a href="about.php" class="nav__link">ABOUT US</a></li>
-                    <li><a href="emergency.php" class="nav__link">REPORT EMERGENCY</a></li>
-                    <li><a href="hotzones.php" class="nav__link">HOT ZONES</a></li>
-                    <li><a href="contact.php" class="nav__link">CONTACT US</a></li>
+    <?php $cur = basename($_SERVER['PHP_SELF'] ?? ''); ?>
+    <!-- =========TOP BAR ========= -->
+    <div class="er-topbar">
+        <div class="container d-flex flex-wrap justify-content-between align-items-center py-2">
+            <span><i class="fa-solid fa-location-dot me-1"></i> Lagos &amp; nationwide emergency response</span>
+            <span>Emergency? Call <a href="tel:112">112</a> &middot; <a href="emergency.php">Report online</a></span>
+        </div>
+    </div>
+
+    <!-- =========NAVBAR ========= -->
+    <header class="er-nav sticky-top">
+        <nav class="navbar navbar-expand-lg container py-2">
+            <a class="navbar-brand d-flex align-items-center gap-2" href="index.php">
+                <i class="fa-solid fa-truck-medical"></i> Eko Response
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#erNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="erNav">
+                <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link <?php echo $cur === 'index.php' ? 'active' : ''; ?>" href="index.php">Home</a></li>
+                    <li class="nav-item"><a class="nav-link <?php echo $cur === 'about.php' ? 'active' : ''; ?>" href="about.php">About</a></li>
+                    <li class="nav-item"><a class="nav-link <?php echo $cur === 'hotzones.php' ? 'active' : ''; ?>" href="hotzones.php">Hot Zones</a></li>
+                    <li class="nav-item"><a class="nav-link <?php echo $cur === 'contact.php' ? 'active' : ''; ?>" href="contact.php">Contact</a></li>
                     <?php if ($loggedIn): ?>
-                        <li><a href="user_dashboard.php" class="nav__link">DASHBOARD</a></li>
+                        <li class="nav-item"><a class="nav-link <?php echo $cur === 'user_dashboard.php' ? 'active' : ''; ?>" href="user_dashboard.php">Dashboard</a></li>
                     <?php endif; ?>
                 </ul>
+                <div class="d-flex align-items-center gap-2">
+                    <a href="emergency.php" class="btn btn-brand fw-semibold"><i class="fa-solid fa-triangle-exclamation me-1"></i> Report Emergency</a>
+                    <?php if ($loggedIn): ?>
+                        <a href="logout.php" class="btn btn-outline-secondary">Logout</a>
+                    <?php else: ?>
+                        <a href="login_signup.php" class="btn btn-outline-secondary">Login</a>
+                    <?php endif; ?>
+                </div>
             </div>
-
-           <div class="d-flex align-items-center justify-content-end modal-btn gap-2">
-                <?php if ($loggedIn): ?>
-                    <a href="user_dashboard.php" class="btn btn-brand">Return to Dashboard</a>
-                    <a href="logout.php" class="btn btn-outline-secondary">Logout</a>
-                <?php else: ?>
-                    <a href="login_signup.php" class="btn btn-outline-secondary">Login</a>
-                    <a href="login_signup.php?form=signup" class="btn btn-brand">Register</a>
-                <?php endif; ?>
-           </div>
         </nav>
     </header>

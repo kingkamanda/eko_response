@@ -61,3 +61,57 @@ body { background: var(--er-bg); color: #222; }
 /* ---- Utilities ---- */
 .er-hero-overlay { background: linear-gradient(90deg, rgba(15,23,42,.72), rgba(15,23,42,.25)); }
 .badge-soft-danger { background: rgba(215,38,61,.12); color: var(--er-primary-d); }
+
+/* ==========================================================================
+   Revamp components (navbar, hero, sections, cards, footer)
+   ========================================================================== */
+
+/* ---- Navbar (Bootstrap navbar based) ---- */
+.er-nav { background:#fff; box-shadow:0 1px 0 var(--er-line); }
+.er-nav .navbar-brand { font-weight:800; color:var(--er-ink); letter-spacing:-.01em; }
+.er-nav .navbar-brand i { color:var(--er-primary); }
+.er-nav .nav-link { font-weight:600; color:var(--er-ink); padding:.5rem 1rem; }
+.er-nav .nav-link:hover, .er-nav .nav-link.active { color:var(--er-primary); }
+.er-topbar { background:var(--er-ink-2); color:#cbd5e1; font-size:.85rem; }
+.er-topbar a { color:#fff; text-decoration:none; font-weight:600; }
+
+/* ---- Hero ---- */
+.er-hero {
+    position:relative; color:#fff; min-height:88vh; display:flex; align-items:center;
+    background: linear-gradient(90deg, rgba(15,23,42,.92), rgba(15,23,42,.55)),
+                url('../images/login_img.jpg') center/cover no-repeat;
+}
+.er-hero h1 { font-weight:800; font-size:clamp(2.2rem, 5vw, 4rem); line-height:1.05; }
+.er-hero .lead { color:#e5e7eb; max-width:36rem; }
+.er-hero .er-chip { background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.2);
+    padding:.35rem .8rem; border-radius:2rem; font-size:.85rem; }
+.er-stats-band { background:var(--er-ink-2); color:#fff; }
+.er-stats-band .num { font-size:2rem; font-weight:800; color:#fff; }
+.er-stats-band .lbl { color:#94a3b8; font-size:.85rem; }
+
+/* ---- Section headers ---- */
+.er-section-head h2 { font-weight:800; color:var(--er-ink); }
+.er-section-head p { color:var(--er-muted); max-width:40rem; margin:.5rem auto 0; }
+
+/* ---- Step + service cards ---- */
+.er-step, .er-service {
+    background:#fff; border:1px solid var(--er-line); border-radius:var(--er-radius);
+    padding:1.5rem; height:100%; transition:transform .2s, box-shadow .2s;
+}
+.er-step:hover, .er-service:hover { transform:translateY(-4px); box-shadow:var(--er-shadow); }
+.er-icon-badge {
+    width:56px; height:56px; border-radius:14px; display:flex; align-items:center; justify-content:center;
+    background:rgba(215,38,61,.1); color:var(--er-primary); font-size:1.4rem; margin-bottom:1rem;
+}
+.er-service h5 { font-weight:700; color:var(--er-ink); }
+.er-service .er-tag { font-size:.75rem; color:var(--er-muted); }
+
+/* ---- Testimonials ---- */
+.er-quote { background:#fff; border-radius:var(--er-radius); box-shadow:var(--er-shadow); padding:1.5rem; height:100%; }
+.er-quote .stars { color:#f59e0b; }
+.er-quote .who { font-weight:700; color:var(--er-ink); }
+.er-quote .where { color:var(--er-muted); font-size:.85rem; }
+
+/* ---- CTA band ---- */
+.er-cta { background:linear-gradient(120deg, var(--er-primary), var(--er-primary-d)); color:#fff; border-radius:1rem; }
+.er-cta h2 { font-weight:800; }

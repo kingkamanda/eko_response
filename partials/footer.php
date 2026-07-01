@@ -1,84 +1,57 @@
-<!-- Footer -->
-<style>
-ul{
-        list-style: none;
-    }
-
-    a{
-        text-decoration: none;
-    }
-</style>
-<section class="footer er-footer" >
-            <footer class="py-5">
-                <div class="container-fluid" >
-                    <div class="row">
-                        <div class="col-md-3">
-                            <h5 class="font-weight-bold text-light">Company</h5>
-                            <ul class="list-unstyled">
-                                <li><a href="index.php" style="text-decoration: none;" class="text-light">Home</a></li>
-                               <!-- <li><a href="about.php" style="text-decoration: none;" class="text-light">About Us</a></li>--->
-                                <li><a href="emergency.php" style="text-decoration: none;" class="text-light">Services</a></li>
-                            </ul>
-                        </div>
-                        <div class="col-md-3">
-                            <h5 class="font-weight-bold text-light">Quick Links</h5>
-                            <ul class="list-unstyled">
-                                <li><a href="hotzones.php" style="text-decoration: none;" class="text-light">Hot Zones</a></li>
-                                <li><a href="agency/login.php" style="text-decoration: none;" class="text-light">Agency Portal</a></li>
-                                <li><a href="admin/" style="text-decoration: none;" class="text-light">Admin</a></li>
-                                <li><a href="contact.php" style="text-decoration: none;" class="text-light">Contact Us</a></li>
-                            </ul>
-                        </div>
-                        <div class="col-md-3">
-                            <h5 class="font-weight-bold text-light">Partners</h5>
-                            <ul class="list-unstyled">
-                                <li><a href="https://lagosstate.gov.ng/" style="text-decoration: none;" class="text-light">Lagos State Government</a></li>
-                                <li><a href="https://npf.gov.ng/" style="text-decoration: none;" class="text-light">Nigerian Police</a></li>
-                                <li><a href="https://fedfire.gov.ng/" style="text-decoration: none;" class="text-light">Federal Fire Service</a></li>
-                                <li><a href="https://health.gov.ng/" style="text-decoration: none;" class="text-light">Federal Ministry of health</a></li>
-                            </ul>
-                        </div>
-                        <div class="col-md-3">
-                            <h5 class="font-weight-bold text-light">About Us</h5>
-                            
-                            <p class="text-light">Welcome to <span class="text-danger">Eko Response</span> a platform built to simplify communication and deliver fast, reliable responses. Our mission is to provide users with an efficient, user-friendly experience that helps them connect, manage requests, and get the information they need quickly. We're committed to making every interaction seamless, secure, and effective.</p>
-                        </div>
-                    </div>
-                    <div class="row mt-4">
-                        <div class="col-md-6 d-flex align-items-center">
-                            <div class="col-4 d-flex align-items-center justify-content-center">
-                                <span class="row align-items-center text-light">&copy; Eko Response</span>
-                            </div>
-                            <ul class="list-inline mb-0">
-                                <li class="list-inline-item "><a href="#" style="text-decoration: none;" class="text-light">Terms</a></li>
-                                <li class="list-inline-item "><a href="#" style="text-decoration: none;" class="text-light">Privacy Policy</a></li>
-                                <li class="list-inline-item "><a href="#" style="text-decoration: none;" class="text-light">Cookies</a></li>
-                            </ul>
-                        </div>
-                        <div class="col-md-6 text-md-right">
-                            <a href="https://www.linkedin.com" target="_blank" rel="noopener" class="btn btn-link text-light"><i class="fab fa-linkedin fa-2x" aria-label="LinkedIn"></i></a>
-                            <a href="https://www.facebook.com" target="_blank" rel="noopener" class="btn btn-link text-light"><i class="fab fa-facebook fa-2x" aria-label="Facebook"></i></a>
-                            <a href="https://www.twitter.com" target="_blank" rel="noopener" class="btn btn-link text-light"><i class="fab fa-twitter fa-2x" aria-label="Twitter"></i></a>
-                        </div>
-                    </div>
+<!-- ============ FOOTER ============ -->
+<footer class="er-footer pt-5 pb-4 mt-0">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-4">
+                <h5 class="text-white fw-bold"><i class="fa-solid fa-truck-medical text-danger"></i> Eko Response</h5>
+                <p class="mt-2">Rapid, reliable emergency response for Lagos and across Nigeria. Report medical,
+                    fire, accident, crime and rescue emergencies, pin the location, and reach the right responders fast.</p>
+                <div class="d-flex gap-3 mt-3">
+                    <a href="https://www.linkedin.com" target="_blank" rel="noopener"><i class="fab fa-linkedin fa-lg"></i></a>
+                    <a href="https://www.facebook.com" target="_blank" rel="noopener"><i class="fab fa-facebook fa-lg"></i></a>
+                    <a href="https://www.twitter.com" target="_blank" rel="noopener"><i class="fab fa-x-twitter fa-lg"></i></a>
+                    <a href="https://wa.me/2340000000000" target="_blank" rel="noopener"><i class="fab fa-whatsapp fa-lg"></i></a>
                 </div>
-                <a href="#" class="chat-btn btn text-light" id="sticky-btn"><i class="fab fa-whatsapp "></i> Chat with us</a>
-            </footer>
-        </section>
+            </div>
+            <div class="col-6 col-lg-2">
+                <h6 class="text-white fw-bold">Platform</h6>
+                <ul class="list-unstyled">
+                    <li class="mb-1"><a href="index.php">Home</a></li>
+                    <li class="mb-1"><a href="about.php">About us</a></li>
+                    <li class="mb-1"><a href="emergency.php">Report emergency</a></li>
+                    <li class="mb-1"><a href="hotzones.php">Hot zones</a></li>
+                    <li class="mb-1"><a href="contact.php">Contact</a></li>
+                </ul>
+            </div>
+            <div class="col-6 col-lg-2">
+                <h6 class="text-white fw-bold">Portals</h6>
+                <ul class="list-unstyled">
+                    <li class="mb-1"><a href="login_signup.php">User login</a></li>
+                    <li class="mb-1"><a href="agency/login.php">Agency portal</a></li>
+                    <li class="mb-1"><a href="admin/">Admin</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-4">
+                <h6 class="text-white fw-bold">Emergency contacts</h6>
+                <p class="mb-1"><i class="fa-solid fa-phone me-2"></i>National emergency: <a href="tel:112">112</a></p>
+                <p class="mb-1"><i class="fa-solid fa-fire-extinguisher me-2"></i>Lagos Fire: <a href="tel:112">112</a></p>
+                <p class="mb-1"><i class="fa-solid fa-shield-halved me-2"></i>Police: <a href="tel:112">112</a></p>
+                <p class="text-white-50 small mt-2 mb-0">In a life-threatening emergency, always call first.</p>
+            </div>
+        </div>
+        <hr class="border-secondary my-4">
+        <div class="d-flex flex-wrap justify-content-between align-items-center">
+            <span class="small">&copy; <?php echo date('Y'); ?> Eko Response. All rights reserved.</span>
+            <ul class="list-inline mb-0 small">
+                <li class="list-inline-item"><a href="#">Terms</a></li>
+                <li class="list-inline-item"><a href="#">Privacy</a></li>
+                <li class="list-inline-item"><a href="#">Cookies</a></li>
+            </ul>
+        </div>
+    </div>
+</footer>
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/static/javascript/main.js"></script>
-    <script>
-    const whatsappBtn = document.getElementById('sticky-btn');
-    const whatsappNumber = '+1234567890'; // Replace with a real WhatsApp number
-
-    if (whatsappBtn) {
-      whatsappBtn.addEventListener('click', () => {
-        window.open(`https://wa.me/${whatsappNumber}`, '_blank');
-      });
-    }
-    </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>
